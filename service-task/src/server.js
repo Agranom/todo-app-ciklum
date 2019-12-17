@@ -3,12 +3,15 @@ import morgan from 'morgan';
 import { json, urlencoded } from 'body-parser';
 import config from './config';
 import { connect } from './utils/db';
+import taskRouter from './routes/task.router';
 
 const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
+
+app.use('/api/task', taskRouter);
 
 export const start = async () => {
   try {

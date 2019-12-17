@@ -4,12 +4,15 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "start": "node ./dist/index.js",
+    "dev": "nodemon --exec npm restart",
     "lint": "npx eslint src --ext .js",
     "lint:fix": "npx eslint src --ext .js --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack",
     "build:prod": "npm run webpack -- --mode production",
-    "build:dev": "npm run webpack -- --mode development"
+    "build:dev": "npm run webpack -- --mode development",
+    "restart": "rimraf dist && npm run build:dev && npm start"
   },
   "author": "vitb@ciklum.com",
   "license": "ISC",
