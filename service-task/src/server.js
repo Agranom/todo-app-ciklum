@@ -5,7 +5,7 @@ import config from './config';
 import { connect } from './utils/db';
 import taskRouter from './routes/task.router';
 
-const app = express();
+export const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));

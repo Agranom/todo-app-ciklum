@@ -10,7 +10,7 @@ export const getOne = model => async (req, res) => {
     res.status(200).json({ ...item.toObject() });
   } catch (e) {
     console.error(e);
-    res.status(400).end();
+    res.status(500).end();
   }
 };
 
@@ -22,7 +22,7 @@ export const getMany = model => async (req, res) => {
     res.status(200).json({ items: serializedItems });
   } catch (e) {
     console.error(e);
-    res.status(400).end();
+    res.status(500).end();
   }
 };
 
@@ -43,13 +43,13 @@ export const updateOne = model => async (req, res) => {
       .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
 
     if (!updatedItem) {
-      return res.status(400).end();
+      return res.status(404).end();
     }
 
     res.status(200).json({ ...updatedItem.toObject() });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(400).end();
   }
 };
 
