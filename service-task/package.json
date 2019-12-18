@@ -12,7 +12,9 @@
     "webpack": "webpack",
     "build:prod": "npm run webpack -- --mode production",
     "build:dev": "npm run webpack -- --mode development",
-    "restart": "rimraf dist && npm run build:dev && npm start"
+    "restart": "rimraf dist && npm run build:dev && npm start",
+    "docker:build": "bash ./devops/scripts/docker-build.sh",
+    "docker:run": "bash ./devops/scripts/docker-run.sh"
   },
   "author": "vitb@ciklum.com",
   "license": "ISC",

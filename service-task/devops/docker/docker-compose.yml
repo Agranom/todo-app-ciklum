@@ -7,6 +7,9 @@ services:
     image: mongo:4.0.4
     networks:
       - service-task
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
     environment:
       NODE_ENV: production
   service:
@@ -16,3 +19,7 @@ services:
     ports:
       - "80:3000"
     restart: on-failure
+
+volumes:
+  mongodb:
+  mongodb_config:
