@@ -10,6 +10,10 @@ const baseConfig = {
 let envConfig = {};
 
 switch (env) {
+  case 'prod':
+  case 'production':
+    envConfig = require('./prod').config;
+    break;
   case 'dev':
   case 'development':
     envConfig = require('./dev').config;

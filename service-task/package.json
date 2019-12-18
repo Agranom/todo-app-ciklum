@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "node ./dist/bundle.js",
     "dev": "nodemon --exec npm restart",
     "lint": "npx eslint src --ext .js",
     "lint:fix": "npx eslint src --ext .js --fix",
@@ -53,6 +53,23 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
+    ]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "12"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-syntax-dynamic-import"
     ]
   }
 }

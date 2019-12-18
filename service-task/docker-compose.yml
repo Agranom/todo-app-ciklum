@@ -1,0 +1,18 @@
+version: "3"
+networks:
+  service-task:
+    external: true
+services:
+  database:
+    image: mongo:4.0.4
+    networks:
+      - service-task
+    environment:
+      NODE_ENV: production
+  service:
+    image: service-task:latest
+    networks:
+      - service-task
+    ports:
+      - "80:3000"
+    restart: on-failure
