@@ -1,0 +1,77 @@
+{
+  "name": "service-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ./dist/bundle.js",
+    "dev": "nodemon --exec npm restart",
+    "lint": "npx eslint src --ext .js",
+    "lint:fix": "npx eslint src --ext .js --fix",
+    "test": "cross-env NODE_ENV=testing jest --detectOpenHandles --coverage --forceExit --silent",
+    "webpack": "webpack",
+    "build:prod": "npm run webpack -- --mode production",
+    "build:dev": "npm run webpack -- --mode development",
+    "restart": "rimraf dist && npm run build:dev && npm start",
+    "docker:build": "bash ./devops/scripts/docker-build.sh",
+    "docker:run": "bash ./devops/scripts/docker-run.sh"
+  },
+  "author": "vitb@ciklum.com",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "mongodb-client-encryption": "^1.0.0",
+    "mongoose": "^5.8.1",
+    "nodemon": "^2.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "@types/faker": "^4.1.8",
+    "@types/jest": "^24.0.23",
+    "@types/lodash": "^4.14.149",
+    "@types/mocha": "^5.2.7",
+    "@types/supertest": "^2.0.8",
+    "babel-loader": "^8.0.6",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "faker": "^4.1.0",
+    "jest": "^24.9.0",
+    "morgan": "^1.9.1",
+    "progress-bar-webpack-plugin": "^1.12.1",
+    "source-map-loader": "^0.2.4",
+    "supertest": "^4.0.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "12"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-syntax-dynamic-import"
+    ]
+  }
+}
