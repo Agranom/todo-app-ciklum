@@ -37,6 +37,18 @@ userSchema.pre('save', function (next) {
   });
 });
 
+userSchema.set('toObject', {
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+
+    delete ret.__v;
+    delete ret.password;
+    delete ret._id;
+
+    return ret;
+  }
+});
+
 userSchema.methods.validatePassword = function (password) {
   const passwordHash = this.password;
   return new Promise((resolve, reject) => {
@@ -48,6 +60,7 @@ userSchema.methods.validatePassword = function (password) {
       resolve(same);
     });
   });
+
 };
 
 export const User = mongoose.model('User', userSchema);

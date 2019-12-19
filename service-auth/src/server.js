@@ -1,18 +1,22 @@
 import express from 'express';
 import morgan from 'morgan';
 import { json, urlencoded } from 'body-parser';
+import passport from 'passport';
 import config from './config';
 import { connect } from './utils/db';
 import { signin, signup } from './controllers/auth.controllers';
+import userRouter from './routes/user.router';
 
 export const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(passport.initialize());
 
 app.post('/signup', signup);
 app.post('/signin', signin);
+app.use('/api/me', userRouter);
 
 export const start = async () => {
   try {
