@@ -6,6 +6,7 @@ import config from './config';
 import { connect } from './utils/db';
 import { signin, signup } from './controllers/auth.controllers';
 import userRouter from './routes/user.router';
+import authRouter from './routes/auth.router';
 
 export const app = express();
 
@@ -17,6 +18,7 @@ app.use(passport.initialize());
 app.post('/signup', signup);
 app.post('/signin', signin);
 app.use('/api/me', userRouter);
+app.use('/api/internal/validate-token', authRouter);
 
 export const start = async () => {
   try {

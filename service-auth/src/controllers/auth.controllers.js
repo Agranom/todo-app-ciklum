@@ -1,5 +1,15 @@
 import { User } from '../models/user.model';
-import { generateToken } from '../utils/auth';
+import { generateToken, verifyToken } from '../utils/auth';
+import { BasicStrategy } from 'passport-http';
+import passport from 'passport';
+
+passport.use(new BasicStrategy((username, password, done) => {
+  console.log(username);
+  if (username === process.env.INTERNAL_USER && password === process.env.INTERNAL_PASSWORD) {
+    return done(null, true);
+  }
+  return done({statusCode: 401});
+}));
 
 export const signup = async (req, res) => {
   const { email, password, ...rest } = req.body;
@@ -45,5 +55,31 @@ export const signin = async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: e.errmsg });
+  }
+};
+
+export const validateTokenAndGetUser = async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(401).end();
+  }
+
+  try {
+    const tokenPayload = await verifyToken(token);
+
+    if (!tokenPayload) {
+      return res.status(401).end();
+    }
+
+    const user = await User.findOne({ _id: tokenPayload.id });
+
+    if (!user) {
+      return res.status(401).end();
+    }
+    res.status(200).json({ ...user.toObject() });
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
   }
 };
