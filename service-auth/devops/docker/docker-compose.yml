@@ -11,13 +11,13 @@ services:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
   service:
-    image: service-task:latest
+    image: service-auth:latest
     networks:
       - default
     env_file:
       - ./../config/local.env
     ports:
-      - "80:3000"
+      - "80:3001"
     restart: on-failure
 
 volumes:
