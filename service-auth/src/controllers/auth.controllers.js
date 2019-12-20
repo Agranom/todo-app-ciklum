@@ -14,12 +14,11 @@ export const signup = async (req, res) => {
       password,
       ...rest
     });
-    req.user = newUser.toJSON();
 
-    return res.status(201).json({ token: generateToken(newUser.id) });
+    res.status(201).json({ token: generateToken(newUser.id) });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: e.errmsg });
+    res.status(400).json({ error: e.errmsg });
   }
 };
 
@@ -29,6 +28,7 @@ export const signin = async (req, res) => {
   if (!email || !password) {
     return res.status(400).end();
   }
+
   try {
     const user = await User.findOne({ email });
 
@@ -40,7 +40,7 @@ export const signin = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).end();
     }
-    req.user = user;
+
     res.status(200).json({ token: generateToken(user.id) });
   } catch (e) {
     console.error(e);
