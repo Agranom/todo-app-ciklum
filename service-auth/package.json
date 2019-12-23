@@ -9,7 +9,7 @@
     "lint": "npx eslint src --ext .js",
     "lint:fix": "npx eslint src --ext .js --fix",
     "test": "cross-env NODE_ENV=testing jest --detectOpenHandles --coverage --forceExit --silent",
-    "test:watch": "cross-env NODE_ENV=testing jest --detectOpenHandles --watch",
+    "test:watch": "env-cmd -f ./devops/config/local.test.env jest --detectOpenHandles --watch",
     "webpack": "webpack",
     "build:prod": "npm run webpack -- --mode production",
     "build:dev": "npm run webpack -- --mode development",

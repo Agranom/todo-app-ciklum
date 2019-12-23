@@ -4,6 +4,7 @@ import { BasicStrategy } from 'passport-http';
 import passport from 'passport';
 
 passport.use(new BasicStrategy((username, password, done) => {
+  console.log(process.env.INTERNAL_USER);
   if (username === process.env.INTERNAL_USER && password === process.env.INTERNAL_PASSWORD) {
     return done(null, true);
   }
@@ -66,19 +67,11 @@ export const validateTokenAndReturnUser = async (req, res) => {
 
   try {
     const tokenPayload = await verifyToken(token);
-
-    if (!tokenPayload) {
-      return res.status(401).end();
-    }
-
     const user = await User.findOne({ _id: tokenPayload.id });
 
-    if (!user) {
-      return res.status(401).end();
-    }
     res.status(200).json({ ...user.toObject() });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(401).end();
   }
 };
