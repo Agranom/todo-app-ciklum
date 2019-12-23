@@ -3,17 +3,24 @@ import { app } from '../server';
 import { Task } from '../models/task.model';
 import { connect } from '../utils/db';
 import faker from 'faker';
+import nock from 'nock';
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
+const userId = mongoose.Types.ObjectId();
 const task = {
   title: faker.random.word(),
   description: faker.random.words(),
   status: 'undone',
+  createdBy: userId,
 };
 const toJSON = obj => JSON.parse(JSON.stringify(obj));
+const token = jwt.sign({ id: userId }, 'test_secret');
 let server;
 let db;
 
 describe('Task API', () => {
+  const headers = { 'Authorization': `Bearer ${token}` };
 
   beforeEach(async (done) => {
     db = await connect();
@@ -22,6 +29,10 @@ describe('Task API', () => {
       global.agent = request.agent(server);
       done();
     });
+
+    nock('http://localhost:3001')
+      .post('/api/internal/validate-token', { token })
+      .reply(200, { id: userId });
   });
 
   afterEach(async () => {
@@ -36,10 +47,17 @@ describe('Task API', () => {
       const serializedTask = toJSON(newTask.toObject());
       const { body } = await request(app)
         .get('/api/task')
+        .set(headers)
         .expect(200);
 
       expect(body.items.length).toBe(1);
       expect(body.items[0]).toEqual(serializedTask);
+    });
+
+    it('should return 401 error when auth header is not provided', async () => {
+      await request(app)
+        .get('/api/task')
+        .expect(401);
     });
   });
 
@@ -50,6 +68,7 @@ describe('Task API', () => {
       const serializedTask = toJSON(newTask.toObject());
       const { body } = await request(app)
         .get(`/api/task/${serializedTask.id}`)
+        .set(headers)
         .expect(200);
 
       expect(body).toEqual(serializedTask);
@@ -61,6 +80,7 @@ describe('Task API', () => {
       const { id } = newTask.toObject();
       await request(app)
         .get(`/api/task/${fakeId}`)
+        .set(headers)
         .expect(404);
 
       expect(fakeId).not.toBe(id);
@@ -73,6 +93,7 @@ describe('Task API', () => {
 
       const { body } = await request(app)
         .post('/api/task')
+        .set(headers)
         .send({
           title: task.title,
           description: task.description
@@ -89,6 +110,7 @@ describe('Task API', () => {
     it('should return status code 400 when invalid data is provided', async () => {
       await request(app)
         .post('/api/task')
+        .set(headers)
         .send({
           title: task.title,
           description: task.description,
@@ -106,6 +128,7 @@ describe('Task API', () => {
       const expected = { ...serializedTask, title: newTitle };
       const { body } = await request(app)
         .put(`/api/task/${serializedTask.id}`)
+        .set(headers)
         .send({ title: newTitle })
         .expect(200);
 
@@ -115,6 +138,7 @@ describe('Task API', () => {
     it('should return 404 status code when none task is found by id', async () => {
       await request(app)
         .put(`/api/task/5df7b7baf3912835f71c3f8b`)
+        .set(headers)
         .send({ title: faker.random.word() })
         .expect(404);
     });
@@ -130,6 +154,7 @@ describe('Task API', () => {
 
       await request(app)
         .delete(`/api/task/${id}`)
+        .set(headers)
         .expect(204);
 
       tasks = await Task.find().lean();
@@ -139,6 +164,7 @@ describe('Task API', () => {
     it('should return 404 status code when none task found', async () => {
       await request(app)
         .delete(`/api/task/5df7b7baf3912835f71c3f8b`)
+        .set(headers)
         .expect(404);
     });
   });
