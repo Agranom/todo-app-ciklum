@@ -1,7 +1,7 @@
 export const getOne = model => async (req, res) => {
   try {
     const item = await model
-      .findOne({ _id: req.params.id });
+      .findOne({ _id: req.params.id, createdBy: req.user.id });
 
     if (!item) {
       return res.status(404).end();
@@ -16,7 +16,7 @@ export const getOne = model => async (req, res) => {
 
 export const getMany = model => async (req, res) => {
   try {
-    const items = await model.find();
+    const items = await model.find({ createdBy: req.user.id });
     const serializedItems = items.map(item => item.toObject());
 
     res.status(200).json({ items: serializedItems });
@@ -28,7 +28,7 @@ export const getMany = model => async (req, res) => {
 
 export const createOne = model => async (req, res) => {
   try {
-    const item = await model.create(req.body);
+    const item = await model.create({ ...req.body, createdBy: req.user.id });
 
     res.status(201).json({ ...item.toObject() });
   } catch (e) {
@@ -40,7 +40,7 @@ export const createOne = model => async (req, res) => {
 export const updateOne = model => async (req, res) => {
   try {
     const updatedItem = await model
-      .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+      .findOneAndUpdate({ _id: req.params.id, createdBy: req.user.id }, req.body, { new: true });
 
     if (!updatedItem) {
       return res.status(404).end();
@@ -56,7 +56,7 @@ export const updateOne = model => async (req, res) => {
 export const removeOne = model => async (req, res) => {
   try {
     const removedItem = await model
-      .findOneAndRemove({ _id: req.params.id })
+      .findOneAndRemove({ _id: req.params.id, createdBy: req.user.id })
       .lean()
       .exec();
 

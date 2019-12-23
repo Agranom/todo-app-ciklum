@@ -17,6 +17,10 @@ const taskSchema = new mongoose.Schema({
     enum: ['undone', 'done'],
     default: 'undone'
   },
+  createdBy: {
+    type: String,
+    required: true
+  }
 }, { timestamps: true, autoIndex: false });
 
 taskSchema.set('toObject', {
@@ -26,6 +30,7 @@ taskSchema.set('toObject', {
     delete ret._id;
     delete ret.updatedAt;
     delete ret.__v;
+    delete ret.createdBy;
     return ret;
   }
 });
