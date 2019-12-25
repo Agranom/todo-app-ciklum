@@ -167,6 +167,7 @@
         "summary": "Get User info",
         "responses": {
           "200": {
+            "description": "User",
             "content": {
               "application/json": {
                 "schema": {
@@ -185,9 +186,6 @@
       }
     }
   },
-  "consumes": [
-    "application/json"
-  ],
   "components": {
     "securitySchemes": {
       "basicAuth": {
