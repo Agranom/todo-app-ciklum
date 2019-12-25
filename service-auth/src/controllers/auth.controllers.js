@@ -8,7 +8,7 @@ passport.use(new BasicStrategy((username, password, done) => {
   if (username === process.env.INTERNAL_USER && password === process.env.INTERNAL_PASSWORD) {
     return done(null, true);
   }
-  return done({statusCode: 401});
+  return done({ statusCode: 401 });
 }));
 
 export const signup = async (req, res) => {
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
     res.status(201).json({ token: generateToken(newUser.id) });
   } catch (e) {
     console.error(e);
-    res.status(400).json({ error: e.errmsg });
+    res.status(500).end();
   }
 };
 
@@ -54,7 +54,7 @@ export const signin = async (req, res) => {
     res.status(200).json({ token: generateToken(user.id) });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: e.errmsg });
+    res.status(500).end();
   }
 };
 

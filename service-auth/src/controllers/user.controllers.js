@@ -21,4 +21,4 @@ passport.use(new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
   }
 }));
 
-export const getProfile = (req, res) => res.json({ ...req.user.toObject() });
+export const getProfile = (req, res) => res.status(200).json({ ...req.user.toObject() });
