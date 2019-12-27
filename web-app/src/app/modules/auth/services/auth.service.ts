@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   signIn(email: string, password: string): Observable<UserToken> {
-    return this.httpClient.post<UserToken>(SIGN_IN_API_ROUTE, { email, password }).pipe(
+    return this.httpClient.post<UserToken>(SIGN_IN_API_ROUTE, {email, password}).pipe(
       map(response => deserialize(response, UserToken)),
       tap(({ token }) => this.saveToken(token))
     );

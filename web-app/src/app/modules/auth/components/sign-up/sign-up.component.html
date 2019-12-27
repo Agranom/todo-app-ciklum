@@ -1,1 +1,19 @@
-<p>sign-up works!</p>
+<!--suppress HtmlFormInputWithoutLabel -->
+<form class="sign-up-form" novalidate [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input placeholder="Email" formControlName="email" matInput>
+    <mat-error *ngIf="signUpForm.get('email')?.errors?.email">Wrong email format</mat-error>
+    <mat-error *ngIf="signUpForm.get('email')?.errors?.required">Field is required</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="Password" type="password" formControlName="password" matInput>
+    <mat-error *ngIf="signUpForm.get('password')?.errors?.required">Field is required</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="First Name" formControlName="firstName" matInput>
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="Last Name" formControlName="lastName" matInput>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="sign-up-form__submit-btn">Sign Up</button>
+</form>

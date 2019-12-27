@@ -1,0 +1,11 @@
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+
+  &__submit-btn {
+    align-self: flex-end;
+  }
+}
