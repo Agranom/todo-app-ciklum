@@ -1,5 +1,5 @@
 <!--suppress HtmlFormInputWithoutLabel -->
-<form class="sign-up-form" novalidate [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+<form class="auth-form" novalidate [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <input placeholder="Email" formControlName="email" matInput>
     <mat-error *ngIf="signUpForm.get('email')?.errors?.email">Wrong email format</mat-error>
@@ -15,5 +15,8 @@
   <mat-form-field>
     <input placeholder="Last Name" formControlName="lastName" matInput>
   </mat-form-field>
-  <button mat-raised-button color="primary" class="sign-up-form__submit-btn">Sign Up</button>
+  <button mat-raised-button
+          color="primary"
+          class="auth-form__submit-btn"
+          [disabled]="isProcessing$ | async">Sign Up</button>
 </form>

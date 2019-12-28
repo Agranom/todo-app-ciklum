@@ -1,1 +1,16 @@
-<p>sign-in works!</p>
+<!--suppress HtmlFormInputWithoutLabel -->
+<form class="auth-form" novalidate [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input placeholder="Email" formControlName="email" matInput>
+    <mat-error *ngIf="signInForm.get('email')?.errors?.email">Wrong email format</mat-error>
+    <mat-error *ngIf="signInForm.get('email')?.errors?.required">Field is required</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="Password" type="password" formControlName="password" matInput>
+    <mat-error *ngIf="signInForm.get('password')?.errors?.required">Field is required</mat-error>
+  </mat-form-field>
+  <button mat-raised-button
+          color="primary"
+          class="auth-form__submit-btn"
+          [disabled]="isProcessing$ | async">Sign In</button>
+</form>
