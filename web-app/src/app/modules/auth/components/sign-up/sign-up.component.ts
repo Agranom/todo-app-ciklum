@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NewUser } from '../../models';
-import { AuthService } from '../../services/auth.service';
+import { AuthState, SignUpActions } from '../../store';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,8 +15,7 @@ export class SignUpComponent {
   signUpForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private router: Router,
-              private authService: AuthService) {
+              private store: Store<AuthState>) {
 
     this.signUpForm = this.buildForm();
   }
@@ -24,8 +23,8 @@ export class SignUpComponent {
   onSubmit(): void {
     if (this.signUpForm.valid) {
       const user: NewUser = { ...this.signUpForm.value };
-      this.authService.signUp(user)
-        .subscribe(() => this.router.navigate(['/']), (error) => console.error(error));
+
+      this.store.dispatch(SignUpActions.signUp({ newUser: user }));
     }
   }
 
