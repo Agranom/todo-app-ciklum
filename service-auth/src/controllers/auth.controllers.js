@@ -2,6 +2,7 @@ import { User } from '../models/user.model';
 import { generateToken, verifyToken } from '../utils/auth';
 import { BasicStrategy } from 'passport-http';
 import passport from 'passport';
+import { ErrorHandler } from '../utils/error-handler';
 
 passport.use(new BasicStrategy((username, password, done) => {
   console.log(process.env.INTERNAL_USER);
@@ -11,11 +12,11 @@ passport.use(new BasicStrategy((username, password, done) => {
   return done({ statusCode: 401 });
 }));
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const { email, password, ...rest } = req.body;
 
   if (!email || !password) {
-    return res.status(400).end();
+    return next(new ErrorHandler(400, 'Email or password is not valid'))
   }
 
   try {
@@ -28,41 +29,44 @@ export const signup = async (req, res) => {
     res.status(201).json({ token: generateToken(newUser.id) });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    if (e.name === 'MongoError' && e.code === 11000) {
+      return next(new ErrorHandler(400, 'User with this email already exists'));
+    }
+    next(new ErrorHandler())
   }
 };
 
-export const signin = async (req, res) => {
+export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).end();
+    return next(new ErrorHandler(400, 'Email or password is not valid'))
   }
 
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).end();
+      return next(new ErrorHandler(401, 'Unauthorized'));
     }
     const isPasswordValid = await user.validatePassword(password);
 
     if (!isPasswordValid) {
-      return res.status(401).end();
+      return next(new ErrorHandler(401, 'Unauthorized'));
     }
 
     res.status(200).json({ token: generateToken(user.id) });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    next(new ErrorHandler());
   }
 };
 
-export const validateTokenAndReturnUser = async (req, res) => {
+export const validateTokenAndReturnUser = async (req, res, next) => {
   const { token } = req.body;
 
   if (!token) {
-    return res.status(401).end();
+    return next(new ErrorHandler(401, 'Unauthorized'));
   }
 
   try {
@@ -72,6 +76,6 @@ export const validateTokenAndReturnUser = async (req, res) => {
     res.status(200).json({ ...user.toObject() });
   } catch (e) {
     console.error(e);
-    res.status(401).end();
+    next(new ErrorHandler(401, 'Unauthorized'));
   }
 };

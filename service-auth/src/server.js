@@ -10,6 +10,7 @@ import userRouter from './routes/user.router';
 import authRouter from './routes/auth.router';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDoc from '../doc/swagger';
+import { handleError } from './utils/error-handler';
 
 
 export const app = express();
@@ -25,6 +26,9 @@ app.post('/signup', signup);
 app.post('/signin', signin);
 app.use('/api/me', userRouter);
 app.use('/api/internal/validate-token', authRouter);
+app.use((err, req, res, next) => {
+  handleError(err, res);
+});
 
 
 export const start = async () => {
