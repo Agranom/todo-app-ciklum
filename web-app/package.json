@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --watch=false --code-coverage --browsers ChromeHeadlessNoSandbox",
+    "test:watch": "ng test --watch=true --browsers ChromeHeadlessNoSandbox",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -28,7 +29,8 @@
     "rxjs": "~6.4.0",
     "serialize-ts": "^2.6.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "faker": "latest"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.21",

@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { MatButtonModule, MatIconModule, MatMenuModule, MatToolbarModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
@@ -28,7 +29,11 @@ const storeDevTools = environment.production ? [] : StoreDevtoolsModule.instrume
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([UserEffects]),
-    storeDevTools
+    storeDevTools,
+    MatToolbarModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { deserialize } from 'serialize-ts/dist';
-import { SIGN_IN_ROUTE } from '../../shared/constants';
+import { AUTH_ROUTE, SIGN_IN_ROUTE } from '../../shared/constants';
 import { ErrorResponse } from '../../shared/models/error-response.model';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class BaseHttpInterceptor implements HttpInterceptor {
       catchError(error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
-            this.router.navigate([SIGN_IN_ROUTE]);
+            this.router.navigate([AUTH_ROUTE, SIGN_IN_ROUTE]);
           }
 
           return throwError(deserialize(error.error, ErrorResponse));

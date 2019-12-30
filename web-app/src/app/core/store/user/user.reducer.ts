@@ -6,7 +6,7 @@ const reducer = createReducer(
   userInitialState,
   on(LoadUserActions.loadUserSuccess, (state, { user }) => ({
     ...state,
-    payload: user
+    payload: {...user}
   }))
 );
 
