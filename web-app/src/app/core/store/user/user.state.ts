@@ -1,13 +1,13 @@
 import { ErrorResponse } from '../../../shared/models/error-response.model';
-import { UserToken } from '../models';
+import { User } from '../../models';
 
-export interface AuthState {
-  payload: UserToken;
+export interface UserState {
+  payload: User;
   loading: boolean;
   error: ErrorResponse;
 }
 
-export const authInitialState: AuthState = {
+export const userInitialState: UserState = {
   payload: null,
   loading: false,
   error: null

@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,6 +9,10 @@ import { environment } from '../../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthHttpInterceptor } from './interceptors/auth-http-interceptor';
+import { BaseHttpInterceptor } from './interceptors/base-http-interceptor';
+import { reducers } from './store';
+import { UserEffects } from './store/user';
 
 const storeDevTools = environment.production ? [] : StoreDevtoolsModule.instrument({ maxAge: 25 });
 
@@ -22,9 +26,13 @@ const storeDevTools = environment.production ? [] : StoreDevtoolsModule.instrume
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([UserEffects]),
     storeDevTools
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: BaseHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

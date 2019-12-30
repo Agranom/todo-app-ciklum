@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { ErrorResponse } from '../../../../shared/models/error-response.model';
 import { NewUser, UserToken } from '../../models';
 
 export const signUp = createAction(
@@ -13,5 +14,5 @@ export const signUpSuccess = createAction(
 
 export const signUpFailure = createAction(
   '[Auth API] Sign Up failure',
-  props<{ error: any }>()
+  props<{ error: ErrorResponse }>()
 );
