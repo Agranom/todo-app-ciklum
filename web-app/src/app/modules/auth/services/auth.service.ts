@@ -1,24 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { deserialize } from 'serialize-ts/dist';
 import { SIGN_IN_API_ROUTE, SIGN_UP_API_ROUTE } from '../constants';
 import { NewUser, UserToken } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
   private readonly authKey = 'auth/web-app';
-  private readonly _isLoggedIn$ = new Subject<boolean>();
+  private readonly _isLoggedIn$ = new BehaviorSubject<boolean>(!!this.token);
 
   constructor(private httpClient: HttpClient) {
   }
 
   get isLoggedIn$(): Observable<boolean> {
-    return this._isLoggedIn$.asObservable();
+    return this._isLoggedIn$.asObservable().pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   get token(): string {

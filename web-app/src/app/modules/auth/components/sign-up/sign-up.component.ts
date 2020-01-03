@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { SIGN_IN_ROUTE } from '../../../../shared/constants';
 import { NewUser } from '../../models';
 import { AuthState, isLoading, SignUpActions } from '../../store';
 
@@ -15,6 +16,8 @@ export class SignUpComponent implements OnInit {
 
   signUpForm: FormGroup;
   isProcessing$: Observable<boolean>;
+
+  readonly signInRoute = SIGN_IN_ROUTE;
 
   constructor(private fb: FormBuilder,
               private store: Store<AuthState>) {

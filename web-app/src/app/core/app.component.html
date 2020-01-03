@@ -1,21 +1,21 @@
 <mat-toolbar color="primary" class="toolbar">
   <span>ToDo App</span>
-  <div class="user-profile" *ngIf="(user$ | async) as user">
+  <div class="user-profile" *ngIf="isLoggedIn$ | async">
     <div class="user-profile__image">
       <img src="https://sun9-4.userapi.com/c824201/v824201969/173426/YW0DIgHPsvw.jpg?ava=1"
            alt="user-avatar">
     </div>
     <div class="user-profile__name">
-      <p>{{user.firstName + ' ' + user.lastName}}</p>
-      <p>{{user.email}}</p>
+      <p>{{(user$ | async)?.firstName + ' ' + (user$ | async)?.lastName}}</p>
+      <p>{{(user$ | async)?.email}}</p>
     </div>
     <button mat-icon-button [matMenuTriggerFor]="userMenu">
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
 
     <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>My tasks</button>
-      <button mat-menu-item>Logout</button>
+      <a [routerLink]="[tasksRoute]" mat-menu-item>My tasks</a>
+      <button (click)="signOut()" mat-menu-item>Sign Out</button>
     </mat-menu>
   </div>
 </mat-toolbar>

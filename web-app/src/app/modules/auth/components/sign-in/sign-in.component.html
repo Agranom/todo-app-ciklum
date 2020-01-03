@@ -12,5 +12,7 @@
   <button mat-raised-button
           color="primary"
           class="auth-form__submit-btn"
-          [disabled]="isProcessing$ | async">Sign In</button>
+          [disabled]="isProcessing$ | async">Sign In
+  </button>
+  <p>Don't have an account yet? Please <a [routerLink]="['../',signUpRoute]">Sign Up</a></p>
 </form>

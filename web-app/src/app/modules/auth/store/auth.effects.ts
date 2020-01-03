@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/internal-compatibility';
+import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
+import { LoadUserActions } from '../../../core/store/user/actions';
 import { UserToken } from '../models';
 import { AuthService } from '../services/auth.service';
 import { SignInActions, SignUpActions } from './actions';
@@ -33,9 +35,12 @@ export class AuthEffects {
   authSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SignUpActions.signUpSuccess, SignInActions.signInSuccess),
-      tap(() => this.router.navigate(['/']))
-    ), { dispatch: false }
+      mergeMap(() => fromPromise(this.router.navigate(['/'])).pipe(
+        map(() => LoadUserActions.loadUser())
+      ))
+    )
   );
+
 
   constructor(private actions$: Actions,
               private authService: AuthService,
