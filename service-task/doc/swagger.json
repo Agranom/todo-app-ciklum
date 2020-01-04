@@ -27,8 +27,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "$ref": "#/components/schemas/Task"
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Task"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -51,7 +58,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": "title",
                 "$ref": "#/components/schemas/TaskNew"
               }
             }
@@ -63,7 +69,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
                   "$ref": "#/components/schemas/Task"
                 }
               }
@@ -100,7 +105,6 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
                   "$ref": "#/components/schemas/Task"
                 }
               }
@@ -137,23 +141,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": "title",
                 "$ref": "#/components/schemas/TaskNew"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Task",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Task"
-                }
-              }
-            }
+          "204": {
+            "description": "No Content"
           },
           "400": {
             "description": "Bad request"
@@ -231,6 +226,7 @@
       "TaskNew": {
         "properties": {
           "title": {
+            "required": true,
             "type": "string"
           },
           "description": {

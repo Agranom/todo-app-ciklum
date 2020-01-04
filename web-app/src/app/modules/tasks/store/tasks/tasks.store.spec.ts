@@ -11,7 +11,7 @@ import { BaseHttpInterceptor } from '../../../../core/interceptors/base-http-int
 import { TaskStatusEnum } from '../../constants';
 import { Task } from '../../models';
 import { reducers } from '../reducers';
-import { CreateTaskActions, LoadTasksActions } from './actions';
+import { CreateTaskActions, LoadTasksActions, UpdateTaskActions } from './actions';
 import { TasksEffects } from './tasks.effects';
 import { selectTasks, selectTasksState } from './tasks.selectors';
 import { TasksState } from './tasks.state';
@@ -77,25 +77,65 @@ describe('Tasks Store Integration', () => {
       description: faker.random.words()
     };
 
-    it('should make an api call and return created task from state', async(() => {
-      const expectedTask: Task = deserialize({
-        id: faker.random.uuid(),
-        title: faker.random.word(),
-        description: faker.random.words(),
-        status: TaskStatusEnum.Undone,
-        createdAt: new Date().toISOString()
-      }, Task);
-      store.dispatch(CreateTaskActions.createTask({ task: body }));
+    describe('createTaskSuccess', () => {
 
-      const req = httpMock.expectOne(url);
+      it('should make an api call and return created task from state', async(() => {
+        const expectedTask: Task = deserialize({
+          id: faker.random.uuid(),
+          title: faker.random.word(),
+          description: faker.random.words(),
+          status: TaskStatusEnum.Undone,
+          createdAt: new Date().toISOString()
+        }, Task);
+        store.dispatch(CreateTaskActions.createTask({ task: body }));
 
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(body);
+        const req = httpMock.expectOne(url);
 
-      req.flush(expectedTask);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual(body);
 
-      store.pipe(select(selectTasks)).pipe(filter(tasks => tasks.some(t => t.id === expectedTask.id)))
-        .subscribe(tasks => expect(tasks[0]).toEqual(expectedTask));
-    }));
+        req.flush(expectedTask);
+
+        store.pipe(select(selectTasks)).pipe(filter(tasks => tasks.some(t => t.id === expectedTask.id)))
+          .subscribe(tasks => expect(tasks[0]).toEqual(expectedTask));
+      }));
+    });
+  });
+
+  describe('updateTask', () => {
+    const existedTask: Task = deserialize({
+      id: faker.random.uuid(),
+      title: faker.random.word(),
+      description: faker.random.words(),
+      status: TaskStatusEnum.Undone,
+      createdAt: new Date().toISOString()
+    }, Task);
+    const url = `http://localhost:3000/api/task/${existedTask.id}`;
+
+    describe('updateTaskSuccess', () => {
+
+      beforeEach(() => {
+        store.dispatch(CreateTaskActions.createTaskSuccess({ newTask: existedTask }));
+      });
+
+      it('should make an api call and update existed task in store', async(() => {
+        const body: Partial<Task> = {
+          title: faker.random.word()
+        };
+        store.dispatch(UpdateTaskActions.updateTask({ id: existedTask.id, task: body }));
+
+        const req = httpMock.expectOne(url);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual(body);
+
+        req.flush({}, { status: 204, statusText: 'No Content' });
+
+        store.pipe(select(selectTasks), filter(tasks => tasks.some(t => t.id === existedTask.id)))
+          .subscribe(tasks => {
+            expect({ ...existedTask, title: body.title }).toEqual(tasks[0]);
+          });
+      }));
+    });
   });
 });

@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, shareReplay, take } from 'rxjs/operators';
 import { Task } from '../../models';
-import { CreateTaskActions, isLoading, LoadTasksActions, selectTasks, TasksState } from '../../store/tasks';
+import {
+  CreateTaskActions,
+  isLoading,
+  LoadTasksActions,
+  selectTasks,
+  TasksState,
+  UpdateTaskActions
+} from '../../store/tasks';
 import { TaskFormDialogComponent } from '../task-form-dialog/task-form-dialog.component';
 
 @Component({
@@ -30,16 +37,25 @@ export class TaskListComponent implements OnInit {
   }
 
   addTask(): void {
-    this.openTaskFormDialog().afterClosed().pipe(
-      filter(task => !!task),
-      take(1)
-    ).subscribe((task: Partial<Task>) => this.store.dispatch(CreateTaskActions.createTask({ task })));
+    this.openTaskFormDialog()
+      .subscribe((task: Partial<Task>) => this.store.dispatch(CreateTaskActions.createTask({ task })));
   }
 
-  private openTaskFormDialog(data?: { task: Task }): MatDialogRef<TaskFormDialogComponent> {
+  editTask(task: Task): void {
+    this.openTaskFormDialog({ task })
+      .subscribe((partialTask: Partial<Task>) => this.store.dispatch(UpdateTaskActions.updateTask({
+        id: task.id,
+        task: partialTask
+      })));
+  }
+
+  private openTaskFormDialog(data?: { task: Task }): Observable<Partial<Task> | boolean> {
     return this.dialog.open(TaskFormDialogComponent, {
       width: '320px',
       data
-    });
+    }).afterClosed().pipe(
+      filter(task => !!task),
+      take(1)
+    );
   }
 }

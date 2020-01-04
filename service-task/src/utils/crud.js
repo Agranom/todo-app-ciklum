@@ -40,13 +40,15 @@ export const createOne = model => async (req, res) => {
 export const updateOne = model => async (req, res) => {
   try {
     const updatedItem = await model
-      .findOneAndUpdate({ _id: req.params.id, createdBy: req.user.id }, req.body, { new: true });
+      .findOneAndUpdate({ _id: req.params.id, createdBy: req.user.id }, req.body, { new: true })
+      .lean()
+      .exec();
 
     if (!updatedItem) {
       return res.status(404).end();
     }
 
-    res.status(200).json({ ...updatedItem.toObject() });
+    res.status(204).end();
   } catch (e) {
     console.error(e);
     res.status(400).end();

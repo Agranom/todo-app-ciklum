@@ -25,4 +25,10 @@ export class TasksService {
       map(response => deserialize(response, Task))
     );
   }
+
+  updateTaskById(id: string, task: Partial<Task>): Observable<{}> {
+    const url = `${TASKS_API_ROUTE}/${id}`;
+
+    return this.httpClient.put<{}>(url, task);
+  }
 }
