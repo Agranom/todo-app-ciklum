@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { TaskListComponent } from './components/task-list/task-list.component';
@@ -16,7 +18,9 @@ import { TasksRoutingModule } from './tasks-routing.module';
     CommonModule,
     TasksRoutingModule,
     StoreModule.forFeature(TASKS_FEATURE_NAME, reducers),
-    EffectsModule.forFeature([TasksEffects])
+    EffectsModule.forFeature([TasksEffects]),
+    MatTableModule,
+    MatButtonModule
   ]
 })
 export class TasksModule {

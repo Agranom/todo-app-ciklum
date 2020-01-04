@@ -5,14 +5,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { select, Store, StoreModule } from '@ngrx/store';
 import * as faker from 'faker';
+import { filter } from 'rxjs/operators';
 import { deserialize } from 'serialize-ts/dist';
 import { BaseHttpInterceptor } from '../../../../core/interceptors/base-http-interceptor';
 import { TaskStatusEnum } from '../../constants';
 import { Task } from '../../models';
 import { reducers } from '../reducers';
-import { LoadTasksActions } from './actions';
+import { CreateTaskActions, LoadTasksActions } from './actions';
 import { TasksEffects } from './tasks.effects';
-import { selectTasksState } from './tasks.selectors';
+import { selectTasks, selectTasksState } from './tasks.selectors';
 import { TasksState } from './tasks.state';
 
 describe('Tasks Store Integration', () => {
@@ -67,5 +68,34 @@ describe('Tasks Store Integration', () => {
         store.pipe(select(selectTasksState)).subscribe(state => expect(state).toEqual(expected));
       }));
     });
+  });
+
+  describe('createTask', () => {
+    const url = 'http://localhost:3000/api/task';
+    const body: Partial<Task> = {
+      title: faker.random.word(),
+      description: faker.random.words()
+    };
+
+    it('should make an api call and return created task from state', async(() => {
+      const expectedTask: Task = deserialize({
+        id: faker.random.uuid(),
+        title: faker.random.word(),
+        description: faker.random.words(),
+        status: TaskStatusEnum.Undone,
+        createdAt: new Date().toISOString()
+      }, Task);
+      store.dispatch(CreateTaskActions.createTask({ task: body }));
+
+      const req = httpMock.expectOne(url);
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(body);
+
+      req.flush(expectedTask);
+
+      store.pipe(select(selectTasks)).pipe(filter(tasks => tasks.some(t => t.id === expectedTask.id)))
+        .subscribe(tasks => expect(tasks[0]).toEqual(expectedTask));
+    }));
   });
 });

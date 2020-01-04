@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { LoadTasksActions } from './actions';
+import { CreateTaskActions, LoadTasksActions } from './actions';
 import { tasksAdapter } from './tasks.adapter';
 import { tasksInitialState, TasksState } from './tasks.state';
 
@@ -8,6 +8,9 @@ const reducer = createReducer(
   on(LoadTasksActions.loadTasks, (state) => ({ ...state, loading: true })),
   on(LoadTasksActions.loadTasksSuccess, (state, { tasks }) => {
     return tasksAdapter.addAll(tasks, { ...state, loading: false });
+  }),
+  on(CreateTaskActions.createTaskSuccess, (state, { newTask }) => {
+    return tasksAdapter.addOne(newTask, state);
   })
 );
 

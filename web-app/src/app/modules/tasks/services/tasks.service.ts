@@ -19,4 +19,10 @@ export class TasksService {
       map(({ items }) => items.map(i => deserialize(i, Task)))
     );
   }
+
+  createTask(task: Partial<Task>): Observable<Task> {
+    return this.httpClient.post(TASKS_API_ROUTE, task).pipe(
+      map(response => deserialize(response, Task))
+    );
+  }
 }

@@ -1,1 +1,39 @@
-<p>task-list works!</p>
+<div class="tasks">
+  <div class="tasks-container" *ngIf="(tasks$ | async)?.length;else noTasksTmpl">
+    <button mat-icon-button>add</button>
+    <table mat-table [dataSource]="tasks$ | async" class="tasks__table">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title</th>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description</th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status</th>
+        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      </ng-container>
+      <ng-container matColumnDef="createdAdt">
+        <th mat-header-cell *matHeaderCellDef> Created</th>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | date: 'short'}} </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions</th>
+        <td mat-cell *matCellDef>
+          <button mat-button>Edit</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <ng-template #noTasksTmpl>
+    <div class="tasks-empty-container">
+      <p>There are no tasks yet. Add your first task.</p>
+      <button mat-raised-button color="primary">Add task</button>
+    </div>
+  </ng-template>
+</div>

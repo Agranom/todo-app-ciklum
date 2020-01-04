@@ -5,7 +5,6 @@ import passport from 'passport';
 import { ErrorHandler } from '../utils/error-handler';
 
 passport.use(new BasicStrategy((username, password, done) => {
-  console.log(process.env.INTERNAL_USER);
   if (username === process.env.INTERNAL_USER && password === process.env.INTERNAL_PASSWORD) {
     return done(null, true);
   }
