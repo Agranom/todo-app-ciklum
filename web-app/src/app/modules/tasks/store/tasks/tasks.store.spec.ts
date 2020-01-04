@@ -11,7 +11,7 @@ import { BaseHttpInterceptor } from '../../../../core/interceptors/base-http-int
 import { TaskStatusEnum } from '../../constants';
 import { Task } from '../../models';
 import { reducers } from '../reducers';
-import { CreateTaskActions, LoadTasksActions, UpdateTaskActions } from './actions';
+import { CreateTaskActions, DeleteTaskActions, LoadTasksActions, UpdateTaskActions } from './actions';
 import { TasksEffects } from './tasks.effects';
 import { selectTasks, selectTasksState } from './tasks.selectors';
 import { TasksState } from './tasks.state';
@@ -135,6 +135,36 @@ describe('Tasks Store Integration', () => {
           .subscribe(tasks => {
             expect({ ...existedTask, title: body.title }).toEqual(tasks[0]);
           });
+      }));
+    });
+  });
+
+  describe('deleteTask', () => {
+    const existedTask: Task = deserialize({
+      id: faker.random.uuid(),
+      title: faker.random.word(),
+      description: faker.random.words(),
+      status: TaskStatusEnum.Undone,
+      createdAt: new Date().toISOString()
+    }, Task);
+    const url = `http://localhost:3000/api/task/${existedTask.id}`;
+
+    describe('deleteTaskSuccess', () => {
+
+      beforeEach(() => {
+        store.dispatch(CreateTaskActions.createTaskSuccess({ newTask: existedTask }));
+      });
+
+      it('should make an api call and delete task from store', async(() => {
+        store.dispatch(DeleteTaskActions.deleteTask({ id: existedTask.id }));
+        const req = httpMock.expectOne(url);
+
+        expect(req.request.method).toBe('DELETE');
+
+        req.flush({}, { statusText: 'No Content', status: 204 });
+
+        store.pipe(select(selectTasks))
+          .subscribe(tasks => expect(tasks.find(t => t.id === existedTask.id)).toBeUndefined());
       }));
     });
   });

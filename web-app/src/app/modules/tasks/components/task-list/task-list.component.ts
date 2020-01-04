@@ -6,6 +6,7 @@ import { filter, shareReplay, take } from 'rxjs/operators';
 import { Task } from '../../models';
 import {
   CreateTaskActions,
+  DeleteTaskActions,
   isLoading,
   LoadTasksActions,
   selectTasks,
@@ -47,6 +48,10 @@ export class TaskListComponent implements OnInit {
         id: task.id,
         task: partialTask
       })));
+  }
+
+  deleteTaskById(id: string): void {
+    this.store.dispatch(DeleteTaskActions.deleteTask({ id }));
   }
 
   private openTaskFormDialog(data?: { task: Task }): Observable<Partial<Task> | boolean> {

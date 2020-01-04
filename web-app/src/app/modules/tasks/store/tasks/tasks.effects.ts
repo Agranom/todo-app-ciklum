@@ -5,7 +5,7 @@ import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { ErrorResponse } from '../../../../shared/models/error-response.model';
 import { Task } from '../../models';
 import { TasksService } from '../../services/tasks.service';
-import { CreateTaskActions, LoadTasksActions, UpdateTaskActions } from './actions';
+import { CreateTaskActions, DeleteTaskActions, LoadTasksActions, UpdateTaskActions } from './actions';
 
 @Injectable()
 export class TasksEffects {
@@ -38,6 +38,16 @@ export class TasksEffects {
           updatedTask: { id, changes: task }
         })),
         catchError((error: ErrorResponse) => of(UpdateTaskActions.updateTaskFailure({ error })))
+      ))
+    )
+  );
+
+  deleteTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DeleteTaskActions.deleteTask),
+      exhaustMap(({ id }) => this.tasksService.deleteTaskById(id).pipe(
+        map(() => DeleteTaskActions.deleteTaskSuccess({ id })),
+        catchError((error: ErrorResponse) => of(DeleteTaskActions.deleteTaskFailure({ error })))
       ))
     )
   );

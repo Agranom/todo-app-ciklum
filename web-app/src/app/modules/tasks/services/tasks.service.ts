@@ -31,4 +31,10 @@ export class TasksService {
 
     return this.httpClient.put<{}>(url, task);
   }
+
+  deleteTaskById(id: string): Observable<{}> {
+    const url = `${TASKS_API_ROUTE}/${id}`;
+
+    return this.httpClient.delete(url);
+  }
 }
