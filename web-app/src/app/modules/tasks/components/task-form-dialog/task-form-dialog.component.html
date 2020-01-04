@@ -1,0 +1,21 @@
+<!--suppress HtmlFormInputWithoutLabel -->
+<h3 mat-dialog-title>{{isEditable ? 'Edit task' : 'Create task'}}</h3>
+<form class="task-form" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <mat-form-field class="task-form__field">
+    <input placeholder="Title" matInput formControlName="title">
+    <mat-error *ngIf="taskForm.get('title').errors?.required">Field is required</mat-error>
+  </mat-form-field>
+  <mat-form-field class="task-form__field">
+    <input placeholder="Description" matInput formControlName="description">
+    <mat-error *ngIf="taskForm.get('description').errors?.required">Field is required</mat-error>
+  </mat-form-field>
+  <mat-form-field class="task-form__field">
+    <mat-select formControlName="status">
+      <mat-option *ngFor="let status of statuses" [value]="status">{{status}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false" type="button">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">{{isEditable ? 'Edit' : 'Create'}}</button>
+  </mat-dialog-actions>
+</form>

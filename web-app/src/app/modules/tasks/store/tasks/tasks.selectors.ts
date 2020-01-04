@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { TASKS_FEATURE_NAME } from '../feature-name';
 import { State } from '../state';
 import { tasksAdapter } from './tasks.adapter';
+import { TasksState } from './tasks.state';
 
 const selectFeatureState = createFeatureSelector(TASKS_FEATURE_NAME);
 
@@ -11,3 +12,4 @@ export const selectTasksState = createSelector(selectFeatureState, (state: State
 
 export const selectTasks = createSelector(selectTasksState, selectAll);
 
+export const isLoading = createSelector(selectTasksState, (state: TasksState) => state.loading);
