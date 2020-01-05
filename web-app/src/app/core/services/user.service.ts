@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { deserialize } from 'serialize-ts/dist';
-import { USER_API_ROUTE } from '../constants';
+import { environment } from '../../../environments/environment';
 import { User } from '../models';
 
 @Injectable({
@@ -15,7 +15,9 @@ export class UserService {
   }
 
   loadUser(): Observable<User> {
-    return this.httpClient.get<User>(USER_API_ROUTE).pipe(
+    const url = `${environment.svcBaseUrls.authSvc}/api/me`;
+
+    return this.httpClient.get<User>(url).pipe(
       map(response => deserialize(response, User))
     );
   }

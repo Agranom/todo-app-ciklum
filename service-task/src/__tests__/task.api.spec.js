@@ -121,18 +121,19 @@ describe('Task API', () => {
 
   describe('/PUT /api/task/:id', () => {
 
-    it('should update task and return the updated one', async () => {
+    it('should update task return 204', async () => {
       const newTask = await Task.create(task);
       const serializedTask = toJSON(newTask.toObject());
       const newTitle = faker.random.word();
       const expected = { ...serializedTask, title: newTitle };
-      const { body } = await request(app)
+      await request(app)
         .put(`/api/task/${serializedTask.id}`)
         .set(headers)
         .send({ title: newTitle })
-        .expect(200);
+        .expect(204);
+      const updatedTask = await Task.findOne({ _id: serializedTask.id });
 
-      expect(body).toEqual(expected);
+      expect(toJSON(updatedTask.toObject())).toEqual(expected);
     });
 
     it('should return 404 status code when none task is found by id', async () => {

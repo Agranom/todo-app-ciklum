@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { deserialize } from 'serialize-ts/dist';
-import { TASKS_API_ROUTE } from '../constants';
+import { environment } from '../../../../environments/environment';
 import { Task } from '../models';
 
 @Injectable({
@@ -15,25 +15,29 @@ export class TasksService {
   }
 
   loadTasks(): Observable<Task[]> {
-    return this.httpClient.get<{ items: Task[] }>(TASKS_API_ROUTE).pipe(
+    const url = `${environment.svcBaseUrls.taskSvc}/api/task`;
+
+    return this.httpClient.get<{ items: Task[] }>(url).pipe(
       map(({ items }) => items.map(i => deserialize(i, Task)))
     );
   }
 
   createTask(task: Partial<Task>): Observable<Task> {
-    return this.httpClient.post(TASKS_API_ROUTE, task).pipe(
+    const url = `${environment.svcBaseUrls.taskSvc}/api/task`;
+
+    return this.httpClient.post(url, task).pipe(
       map(response => deserialize(response, Task))
     );
   }
 
   updateTaskById(id: string, task: Partial<Task>): Observable<{}> {
-    const url = `${TASKS_API_ROUTE}/${id}`;
+    const url = `${environment.svcBaseUrls.taskSvc}/api/task/${id}`;
 
     return this.httpClient.put<{}>(url, task);
   }
 
   deleteTaskById(id: string): Observable<{}> {
-    const url = `${TASKS_API_ROUTE}/${id}`;
+    const url = `${environment.svcBaseUrls.taskSvc}/api/task/${id}`;
 
     return this.httpClient.delete(url);
   }

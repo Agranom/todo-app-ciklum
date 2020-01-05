@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { deserialize } from 'serialize-ts/dist';
-import { SIGN_IN_API_ROUTE, SIGN_UP_API_ROUTE } from '../constants';
+import { environment } from '../../../../environments/environment';
 import { NewUser, UserToken } from '../models';
 
 @Injectable({
@@ -26,7 +26,9 @@ export class AuthService {
   }
 
   signUp(newUser: NewUser): Observable<UserToken> {
-    return this.httpClient.post<UserToken>(SIGN_UP_API_ROUTE, newUser).pipe(
+    const url = `${environment.svcBaseUrls.authSvc}/signup`;
+
+    return this.httpClient.post<UserToken>(url, newUser).pipe(
       map(response => deserialize(response, UserToken)),
       tap(({ token }) => this.saveToken(token)),
       tap(() => this._isLoggedIn$.next(true))
@@ -34,7 +36,9 @@ export class AuthService {
   }
 
   signIn(email: string, password: string): Observable<UserToken> {
-    return this.httpClient.post<UserToken>(SIGN_IN_API_ROUTE, { email, password }).pipe(
+    const url = `${environment.svcBaseUrls.authSvc}/signin`;
+
+    return this.httpClient.post<UserToken>(url, { email, password }).pipe(
       map(response => deserialize(response, UserToken)),
       tap(({ token }) => this.saveToken(token)),
       tap(() => this._isLoggedIn$.next(true))

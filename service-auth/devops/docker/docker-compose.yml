@@ -17,7 +17,7 @@ services:
     env_file:
       - ./../config/local.env
     ports:
-      - "80:3001"
+      - "3001:3001"
     restart: on-failure
 
 volumes:

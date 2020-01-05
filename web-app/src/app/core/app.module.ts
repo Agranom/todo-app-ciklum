@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatButtonModule, MatIconModule, MatMenuModule, MatToolbarModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthHttpInterceptor } from './interceptors/auth-http-interceptor';
 import { BaseHttpInterceptor } from './interceptors/base-http-interceptor';
+import { ConfigLoader } from './services/config-loader.service';
 import { reducers } from './store';
 import { UserEffects } from './store/user';
 
@@ -36,8 +37,15 @@ const storeDevTools = environment.production ? [] : StoreDevtoolsModule.instrume
     MatIconModule
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (configService: ConfigLoader) => () => configService.initConfig(),
+      deps: [ConfigLoader],
+      multi: true
+    },
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: BaseHttpInterceptor, multi: true },
+
   ],
   bootstrap: [AppComponent]
 })

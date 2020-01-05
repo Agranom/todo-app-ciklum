@@ -1,0 +1,60 @@
+version: "3.5"
+services:
+  database:
+    image: mongo:4.0.4
+    networks:
+      - app-network
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+  service-auth:
+    image: service-auth:latest
+    build:
+      context: ./service-auth
+      dockerfile: ./devops/docker/Dockerfile
+    networks:
+      - app-network
+    env_file:
+      - ./service-auth/devops/config/local.env
+    ports:
+      - "3001:3001"
+    restart: on-failure
+  service-task:
+    image: service-task:latest
+    build:
+      context: ./service-task
+      dockerfile: ./devops/docker/Dockerfile
+    networks:
+      - app-network
+    env_file:
+      - ./service-task/devops/config/local.env
+    ports:
+      - "3000:3000"
+    restart: on-failure
+  web-app:
+    build:
+      context: ./web-app
+      dockerfile: ./devops/docker/Dockerfile
+    ports:
+      - "8000:80"
+    networks:
+      - app-network
+#  swagger-ui:
+#    image: swaggerapi/swagger-ui
+#    container_name: "swagger-ui"
+#    ports:
+#      - "8082:8080"
+#    volumes:
+#      - ./service-auth/doc/swagger.json:/swagger.json
+#    environment:
+#      SWAGGER_JSON: /swagger.json
+#      BASE_URL: /api-doc
+
+
+
+volumes:
+  mongodb:
+  mongodb_config:
+networks:
+  app-network:
+    driver: bridge
