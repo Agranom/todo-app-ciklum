@@ -17,6 +17,8 @@ jobs:
         - docker push agranom/service-auth
     - stage: deploy
       script: skip
+      before_deploy:
+        - cd ./service-auth/.ebextensions
       deploy:
         provider: elasticbeanstalk
         access_key_id: $AWS_ACCESS_KEY_ID
@@ -25,4 +27,3 @@ jobs:
         app: 'service-auth'
         env: 'ServiceAuth-env'
         bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-        bucket_path: 'service-auth'

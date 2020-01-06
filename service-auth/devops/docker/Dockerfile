@@ -15,4 +15,6 @@ RUN npm i
 RUN npm run build:prod
 RUN rm -rf node_modules/ src/ devops/
 
+EXPOSE 3001
+
 CMD ["node", "/opt/app/dist/bundle.js"]
