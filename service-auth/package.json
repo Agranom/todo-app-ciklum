@@ -65,7 +65,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/config/"
-    ]
+    ],
+    "setupFilesAfterEnv": ["./jest.setup.js"]
   },
   "babel": {
     "presets": [
