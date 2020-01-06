@@ -8,7 +8,6 @@ ADD ./devops $WORK_DIR/devops
 ADD ./doc $WORK_DIR/doc
 ADD ./package.json $WORK_DIR
 ADD ./webpack.config.js $WORK_DIR
-ADD ./Dockerrun.aws.json $WORK_DIR
 
 WORKDIR $WORK_DIR
 RUN npm i
