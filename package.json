@@ -1,0 +1,22 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ci:install": "npm --prefix ./service-auth i",
+    "ci:test": "npm run --prefix ./service-auth test",
+    "ci:docker:build": "npm run --prefix ./service-auth docker:build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Agranom/todo-app-ciklum.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Agranom/todo-app-ciklum/issues"
+  },
+  "homepage": "https://github.com/Agranom/todo-app-ciklum#readme"
+}

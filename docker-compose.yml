@@ -8,7 +8,7 @@ services:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
   service-auth:
-    image: service-auth:latest
+    image: agranom/service-auth
     build:
       context: ./service-auth
       dockerfile: ./devops/docker/Dockerfile

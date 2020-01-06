@@ -11,7 +11,7 @@ services:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
   service:
-    image: service-auth:latest
+    image: agranom/service-auth
     networks:
       - default
     env_file:

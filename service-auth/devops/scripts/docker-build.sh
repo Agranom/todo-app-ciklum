@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -f "./devops/docker/Dockerfile" -t service-auth .
+docker build -f "./devops/docker/Dockerfile" -t agranom/service-auth .
