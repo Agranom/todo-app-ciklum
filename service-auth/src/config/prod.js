@@ -1,3 +1,3 @@
 export const config = {
-  dbUrl: 'mongodb://database/users'
+  dbUrl: process.env.DB_URL
 };
