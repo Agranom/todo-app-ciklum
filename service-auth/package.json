@@ -8,7 +8,7 @@
     "dev": "nodemon --exec npm restart",
     "lint": "npx eslint src --ext .js",
     "lint:fix": "npx eslint src --ext .js --fix",
-    "test": "env-cmd -f ./devops/config/local.test.env jest --timeout=10000 --detectOpenHandles --coverage --forceExit --silent",
+    "test": "env-cmd -f ./devops/config/local.test.env jest --detectOpenHandles --coverage --forceExit --silent",
     "test:watch": "env-cmd -f ./devops/config/local.test.env jest --detectOpenHandles --watch",
     "webpack": "webpack",
     "build:prod": "npm run webpack -- --mode production",
