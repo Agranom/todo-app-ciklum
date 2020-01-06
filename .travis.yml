@@ -1,7 +1,9 @@
 language: node_js
 node_js:
   - 'node'
-services: docker
+services:
+  - docker
+  - mongodb
 jobs:
   include:
     - stage: test
