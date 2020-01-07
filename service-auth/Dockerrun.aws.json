@@ -7,7 +7,18 @@
       "memory": 128,
       "portMappings": [
         {
+          "hostPort": "80",
           "containerPort": "3001"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DB_URL",
+          "valueFrom": "arn:aws:secretsmanager:us-east-2:378118473695:secret:todo-app-be-credentials-B8yY1X/SVC_AUTH_DB_URL"
+        },
+        {
+          "name": "INTERNAL_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:us-east-2:378118473695:secret:todo-app-be-credentials-B8yY1X/INTERNAL_PASSWORD"
         }
       ],
       "environment": [
@@ -22,14 +33,6 @@
         {
           "name": "PORT",
           "value": "3001"
-        },
-        {
-          "name": "DB_URL",
-          "value": "mongodb+srv://agranom:303132@users-db-r7g07.mongodb.net/usersdb?retryWrites=true&w=majority"
-        },
-        {
-          "name": "INTERNAL_PASSWORD",
-          "value": "agranom"
         }
       ]
     }
