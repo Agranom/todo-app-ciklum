@@ -32,33 +32,6 @@
           "value": "agranom"
         }
       ]
-    },
-    {
-      "name": "swagger-ui",
-      "image": "swaggerapi/swagger-ui",
-      "memory": 128,
-      "portMappings": [
-        {
-          "hostPort": "8080",
-          "containerPort": "8080"
-        }
-      ],
-      "environment": [
-        {
-          "name": "SWAGGER_JSON",
-          "value": "/swagger.json"
-        },
-        {
-          "name": "BASE_URL",
-          "value": "/api-doc"
-        }
-      ],
-      "mountPoints": [
-        {
-          "sourceVolume": "./doc/swagger.json",
-          "containerPath": "/swagger.json"
-        }
-      ]
     }
   ]
 }
