@@ -28,3 +28,4 @@ jobs:
         env: 'ServiceAuth-env-1'
         bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
         label: $TRAVIS_BUILD_NUMBER
+        skip_cleanup: true
