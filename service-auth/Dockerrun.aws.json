@@ -14,7 +14,7 @@
       "secrets": [
         {
           "name": "DB_URL",
-          "valueFrom": "arn:aws:ssm:us-east-2:378118473695:parameter/SVC_AUTH_DB_URL"
+          "valueFrom": "arn:aws:ssm:us-east-2:378118473695:parameter/SVS_AUTH_DB_URL"
         },
         {
           "name": "INTERNAL_PASSWORD",
