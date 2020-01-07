@@ -10,11 +10,11 @@ jobs:
       script:
         - npm run ci:install
         - npm run ci:test
-    - stage: docker-deploy-image
-      script:
-        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-        - npm run ci:docker:build
-        - docker push agranom/service-auth
+#    - stage: docker-deploy-image
+#      script:
+#        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+#        - npm run ci:docker:build
+#        - docker push agranom/service-auth
     - stage: deploy
       script: skip
       before_deploy:
@@ -25,6 +25,6 @@ jobs:
         secret_access_key: $AWS_SECRET_ACCESS_KEY
         region: 'us-east-2'
         app: 'service-auth'
-        env: 'ServiceAuth-env'
+        env: 'ServiceAuth-env-1'
         bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-        label: 'Service Auth v1.0.0'
+        label: 'v1.0.0'
