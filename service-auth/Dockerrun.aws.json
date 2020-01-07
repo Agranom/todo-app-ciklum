@@ -1,40 +1,12 @@
 {
-  "AWSEBDockerrunVersion": 2,
-  "containerDefinitions": [
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "agranom/service-auth",
+    "Update": "true"
+  },
+  "Ports": [
     {
-      "name": "service-auth",
-      "image": "agranom/service-auth",
-      "memory": 128,
-      "portMappings": [
-        {
-          "hostPort": "80",
-          "containerPort": "3001"
-        }
-      ],
-      "secrets": [
-        {
-          "name": "DB_URL",
-          "valueFrom": "arn:aws:secretsmanager:us-east-2:378118473695:secret:todo-app-be-credentials-B8yY1X/SVC_AUTH_DB_URL"
-        },
-        {
-          "name": "INTERNAL_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:us-east-2:378118473695:secret:todo-app-be-credentials-B8yY1X/INTERNAL_PASSWORD"
-        }
-      ],
-      "environment": [
-        {
-          "name": "INTERNAL_USER",
-          "value": "agranom"
-        },
-        {
-          "name": "NODE_ENV",
-          "value": "production"
-        },
-        {
-          "name": "PORT",
-          "value": "3001"
-        }
-      ]
+      "ContainerPort": "3001"
     }
   ]
 }

@@ -10,11 +10,11 @@ jobs:
 #      script:
 #        - npm run ci:install
 #        - npm run ci:test
-#    - stage: docker-deploy-image
-#      script:
-#        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-#        - npm run ci:docker:build
-#        - docker push agranom/service-auth
+    - stage: docker-deploy-image
+      script:
+        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+        - npm run ci:docker:build
+        - docker push agranom/service-auth
     - stage: deploy
       script: skip
       before_deploy:
