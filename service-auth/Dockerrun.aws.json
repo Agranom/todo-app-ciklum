@@ -1,12 +1,61 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "agranom/service-auth",
-    "Update": "true"
-  },
-  "Ports": [
+  "AWSEBDockerrunVersion": "2",
+  "containerDefinitions": [
     {
-      "ContainerPort": "3001"
+      "name": "service-auth",
+      "image": "agranom/service-auth",
+      "portMappings": [
+        {
+          "containerPort": "3001"
+        }
+      ],
+      "environment": [
+        {
+          "name": "INTERNAL_USER",
+          "value": "agranom"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "PORT",
+          "value": "3001"
+        },
+        {
+          "name": "DB_URL",
+          "value": "mongodb+srv://agranom:303132@users-db-r7g07.mongodb.net/usersdb?retryWrites=true&w=majority"
+        },
+        {
+          "name": "INTERNAL_PASSWORD",
+          "value": "agranom"
+        }
+      ]
+    },
+    {
+      "name": "swagger-ui",
+      "image": "swaggerapi/swagger-ui",
+      "portMappings": [
+        {
+          "containerPort": "8080"
+        }
+      ],
+      "environment": [
+        {
+          "name": "SWAGGER_JSON",
+          "value": "/swagger.json"
+        },
+        {
+          "name": "BASE_URL",
+          "value": "/api-doc"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "./doc/swagger.json",
+          "containerPath": "/swagger.json"
+        }
+      ]
     }
   ]
 }

@@ -27,3 +27,4 @@ jobs:
         app: 'service-auth'
         env: 'ServiceAuth-env'
         bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+        overwrite: true
