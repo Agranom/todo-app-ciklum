@@ -1,5 +1,6 @@
 {
   "AWSEBDockerrunVersion": 2,
+  "executionRoleArn": "arn:aws:iam::378118473695:role/aws-elasticbeanstalk-service-role",
   "containerDefinitions": [
     {
       "name": "service-auth",
