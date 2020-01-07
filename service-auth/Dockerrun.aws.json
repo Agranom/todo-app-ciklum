@@ -4,6 +4,7 @@
     {
       "name": "service-auth",
       "image": "agranom/service-auth",
+      "memory": 128,
       "portMappings": [
         {
           "containerPort": "3001"
@@ -35,6 +36,7 @@
     {
       "name": "swagger-ui",
       "image": "swaggerapi/swagger-ui",
+      "memory": 128,
       "portMappings": [
         {
           "containerPort": "8080"
