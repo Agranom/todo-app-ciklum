@@ -5,7 +5,7 @@ ENV WORK_DIR /opt/app
 
 ADD ./src $WORK_DIR/src
 ADD ./devops $WORK_DIR/devops
-ADD ./doc $WORK_DIR/doc
+ADD ./public $WORK_DIR/public
 ADD ./package.json $WORK_DIR
 ADD ./webpack.config.js $WORK_DIR
 

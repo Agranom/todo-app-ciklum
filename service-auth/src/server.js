@@ -8,20 +8,18 @@ import { connect } from './utils/db';
 import { signin, signup } from './controllers/auth.controllers';
 import userRouter from './routes/user.router';
 import authRouter from './routes/auth.router';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDoc from '../doc/swagger';
 import { handleError } from './utils/error-handler';
 
 
 export const app = express();
 
+app.use(express.static('public'));
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(passport.initialize());
 
-app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.post('/signup', signup);
 app.post('/signin', signin);
 app.use('/api/me', userRouter);
