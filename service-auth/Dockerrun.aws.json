@@ -14,11 +14,11 @@
       "secrets": [
         {
           "name": "DB_URL",
-          "valueFrom": "arn:aws:secretsmanager:us-east-2:378118473695:secret:todo-app-be-credentials-B8yY1X/SVC_AUTH_DB_URL"
+          "valueFrom": "arn:aws:ssm:us-east-2:378118473695:parameter/SVC_AUTH_DB_URL"
         },
         {
           "name": "INTERNAL_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:us-east-2:378118473695:secret:todo-app-be-credentials-B8yY1X/INTERNAL_PASSWORD"
+          "valueFrom": "arn:aws:ssm:us-east-2:378118473695:parameter/INTERNAL_PASSWORD"
         }
       ],
       "environment": [
