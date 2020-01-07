@@ -1,6 +1,6 @@
 {
   "AWSEBDockerrunVersion": 2,
-  "executionRoleArn": "arn:aws:iam::378118473695:role/dhdhd",
+  "executionRoleArn": "arn:aws:iam::378118473695:role/AmazonAgranomS3Role",
   "containerDefinitions": [
     {
       "name": "service-auth",
