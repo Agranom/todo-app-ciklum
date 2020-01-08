@@ -1,3 +1,3 @@
 export const config = {
-  dbUrl: 'mongodb://localhost:27017/tasks'
+  dbUrl: process.env.DB_URL
 };

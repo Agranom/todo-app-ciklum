@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ci:install": "npm --prefix ./service-auth i",
-    "ci:test": "npm run --prefix ./service-auth test",
-    "ci:docker:build": "npm run --prefix ./service-auth docker:build"
+    "ci:install": "bash ./scripts/install.sh",
+    "ci:test": "bash ./scripts/test.sh",
+    "ci:docker:build": "bash ./scripts/docker-build.sh",
+    "ci:docker:publish": "bash ./scripts/docker-publish.sh"
   },
   "repository": {
     "type": "git",

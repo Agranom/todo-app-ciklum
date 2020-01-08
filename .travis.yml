@@ -14,17 +14,32 @@ jobs:
       script:
         - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
         - npm run ci:docker:build
-        - docker push agranom/service-auth
+        - npm run ci:docker:publish
     - stage: deploy
       script: skip
       before_deploy:
         - cd ./service-auth
       deploy:
-        provider: elasticbeanstalk
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_ACCESS_KEY
-        region: 'us-east-2'
-        app: 'service-auth'
-        env: 'ServiceAuth-env'
-        bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+        - provider: elasticbeanstalk
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          region: 'us-east-2'
+          app: 'service-auth'
+          env: 'ServiceAuth-env'
+          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+          bucket_path: 'service-auth'
+          cleanup: true
+          run:
+            - cd ../service-task
+        - provider: elasticbeanstalk
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          region: 'us-east-2'
+          app: 'Service Task'
+          env: 'prod-env'
+          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+          bucket_path: 'service-task'
+          cleanup: true
+          run:
+            - cd ..
 
