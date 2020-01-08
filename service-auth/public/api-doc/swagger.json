@@ -4,11 +4,6 @@
     "title": "Auth API Documentation",
     "version": "v1"
   },
-  "servers": [
-    {
-      "url": "http://localhost:3001"
-    }
-  ],
   "paths": {
     "/signup": {
       "post": {
