@@ -28,7 +28,7 @@ jobs:
           app: 'service-auth'
           env: 'ServiceAuth-env'
           bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-          bucket_path: 'service-auth'
+#          bucket_path: 'service-auth'
           skip_cleanup: true
         - provider: elasticbeanstalk
           local_dir: service-task
@@ -38,5 +38,5 @@ jobs:
           app: 'Service Task'
           env: 'prod-env'
           bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-          bucket_path: 'service-task'
+#          bucket_path: 'service-task'
           skip_cleanup: true
