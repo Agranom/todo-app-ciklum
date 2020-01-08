@@ -6,25 +6,25 @@ services:
   - mongodb
 jobs:
   include:
-    - stage: test
-      script:
-        - npm run ci:install
-        - npm run ci:test
+#    - stage: test
+#      script:
+#        - npm run ci:install
+#        - npm run ci:test
     - stage: docker-deploy-image
       script:
         - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
         - npm run ci:docker:build
         - docker push agranom/service-auth
-    - stage: deploy
-      script: skip
-      before_deploy:
-        - cd ./service-auth
-      deploy:
-        provider: elasticbeanstalk
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_ACCESS_KEY
-        region: 'us-east-2'
-        app: 'service-auth'
-        env: 'ServiceAuth-env'
-        bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+#    - stage: deploy
+#      script: skip
+#      before_deploy:
+#        - cd ./service-auth
+#      deploy:
+#        provider: elasticbeanstalk
+#        access_key_id: $AWS_ACCESS_KEY_ID
+#        secret_access_key: $AWS_SECRET_ACCESS_KEY
+#        region: 'us-east-2'
+#        app: 'service-auth'
+#        env: 'ServiceAuth-env'
+#        bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
 
