@@ -17,10 +17,11 @@ jobs:
 #        - npm run ci:docker:publish
     - stage: deploy
       script: skip
+#      before_deploy:
+#        - cd ./service-auth
       deploy:
         - provider: elasticbeanstalk
-          file_glob: true
-          file: ./service-auth/*
+          local_dir: service-auth
           access_key_id: $AWS_ACCESS_KEY_ID
           secret_access_key: $AWS_SECRET_ACCESS_KEY
           region: 'us-east-2'
@@ -28,10 +29,9 @@ jobs:
           env: 'ServiceAuth-env'
           bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
           bucket_path: 'service-auth'
-          cleanup: true
+          skip_cleanup: true
         - provider: elasticbeanstalk
-          file_glob: true
-          file: ./service-task/*
+          local_dir: service-task
           access_key_id: $AWS_ACCESS_KEY_ID
           secret_access_key: $AWS_SECRET_ACCESS_KEY
           region: 'us-east-2'
@@ -39,4 +39,4 @@ jobs:
           env: 'prod-env'
           bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
           bucket_path: 'service-task'
-          cleanup: true
+          skip_cleanup: true
