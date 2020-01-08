@@ -21,22 +21,24 @@ jobs:
 #        - cd ./service-auth
       deploy:
         - provider: elasticbeanstalk
-          local_dir: service-auth
+          zip_file: service-auth
           access_key_id: $AWS_ACCESS_KEY_ID
           secret_access_key: $AWS_SECRET_ACCESS_KEY
           region: 'us-east-2'
+          label: service-auth
           app: 'service-auth'
           env: 'ServiceAuth-env'
           bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-#          bucket_path: 'service-auth'
+          bucket_path: 'service-auth'
           skip_cleanup: true
         - provider: elasticbeanstalk
-          local_dir: service-task
+          label: service-task
+          zip_file: service-task
           access_key_id: $AWS_ACCESS_KEY_ID
           secret_access_key: $AWS_SECRET_ACCESS_KEY
           region: 'us-east-2'
           app: 'Service Task'
           env: 'prod-env'
           bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-#          bucket_path: 'service-task'
+          bucket_path: 'service-task'
           skip_cleanup: true
