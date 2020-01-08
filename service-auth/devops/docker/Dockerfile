@@ -8,6 +8,9 @@ ENV WORK_DIR /opt/app
 ENV DB_URL=$DB_URL
 ENV INTERNAL_PASSWORD=$INTERNAL_PASSWORD
 
+RUN echo "${DB_URL}"
+RUN echo "${INTERNAL_PASSWORD}"
+
 ADD ./src $WORK_DIR/src
 ADD ./devops $WORK_DIR/devops
 ADD ./public $WORK_DIR/public
