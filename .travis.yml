@@ -6,40 +6,43 @@ services:
   - mongodb
 jobs:
   include:
-    - stage: test
-      script:
-        - npm run ci:install
-        - npm run ci:test
-    - stage: docker-deploy-image
-      script:
-        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-        - npm run ci:docker:build
-        - npm run ci:docker:publish
+#    - stage: test
+#      script:
+#        - npm run ci:install
+#        - npm run ci:test
+#    - stage: docker-deploy-image
+#      script:
+#        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+#        - npm run ci:docker:build
+#        - npm run ci:docker:publish
     - stage: deploy
       script: skip
       before_deploy:
-        - cd ./service-auth
+        - sudo pip install awscli
+#        - cd ./service-auth
       deploy:
-        - provider: elasticbeanstalk
-          access_key_id: $AWS_ACCESS_KEY_ID
-          secret_access_key: $AWS_SECRET_ACCESS_KEY
-          region: 'us-east-2'
-          app: 'service-auth'
-          env: 'ServiceAuth-env'
-          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-          bucket_path: 'service-auth'
-          cleanup: true
-          run:
-            - cd ../service-task
-        - provider: elasticbeanstalk
-          access_key_id: $AWS_ACCESS_KEY_ID
-          secret_access_key: $AWS_SECRET_ACCESS_KEY
-          region: 'us-east-2'
-          app: 'Service Task'
-          env: 'prod-env'
-          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-          bucket_path: 'service-task'
-          cleanup: true
-          run:
-            - cd ..
+        - provider: script
+          script: aws help
+#        - provider: elasticbeanstalk
+#          access_key_id: $AWS_ACCESS_KEY_ID
+#          secret_access_key: $AWS_SECRET_ACCESS_KEY
+#          region: 'us-east-2'
+#          app: 'service-auth'
+#          env: 'ServiceAuth-env'
+#          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+#          bucket_path: 'service-auth'
+#          cleanup: true
+#          run:
+#            - cd ../service-task
+#        - provider: elasticbeanstalk
+#          access_key_id: $AWS_ACCESS_KEY_ID
+#          secret_access_key: $AWS_SECRET_ACCESS_KEY
+#          region: 'us-east-2'
+#          app: 'Service Task'
+#          env: 'prod-env'
+#          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+#          bucket_path: 'service-task'
+#          cleanup: true
+#          run:
+#            - cd ..
 
