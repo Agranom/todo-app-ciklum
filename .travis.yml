@@ -18,31 +18,24 @@ jobs:
     - stage: deploy
       script: skip
       before_deploy:
-        - sudo pip install awscli
-#        - cd ./service-auth
+        - cd ./service-auth
       deploy:
-        - provider: script
-          script: aws help
-#        - provider: elasticbeanstalk
-#          access_key_id: $AWS_ACCESS_KEY_ID
-#          secret_access_key: $AWS_SECRET_ACCESS_KEY
-#          region: 'us-east-2'
-#          app: 'service-auth'
-#          env: 'ServiceAuth-env'
-#          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-#          bucket_path: 'service-auth'
-#          cleanup: true
-#          run:
-#            - cd ../service-task
-#        - provider: elasticbeanstalk
-#          access_key_id: $AWS_ACCESS_KEY_ID
-#          secret_access_key: $AWS_SECRET_ACCESS_KEY
-#          region: 'us-east-2'
-#          app: 'Service Task'
-#          env: 'prod-env'
-#          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
-#          bucket_path: 'service-task'
-#          cleanup: true
-#          run:
-#            - cd ..
-
+        - provider: elasticbeanstalk
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          region: 'us-east-2'
+          app: 'service-auth'
+          env: 'ServiceAuth-env'
+          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+          bucket_path: 'service-auth'
+          cleanup: true
+          run: 'cd ../service-task'
+        - provider: elasticbeanstalk
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key: $AWS_SECRET_ACCESS_KEY
+          region: 'us-east-2'
+          app: 'Service Task'
+          env: 'prod-env'
+          bucket_name: 'elasticbeanstalk-us-east-2-378118473695'
+          bucket_path: 'service-task'
+          cleanup: true
