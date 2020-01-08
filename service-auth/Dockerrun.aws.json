@@ -1,40 +1,11 @@
 {
-  "AWSEBDockerrunVersion": 2,
-  "executionRoleArn": "arn:aws:iam::378118473695:role/AmazonAgranomS3Role",
-  "containerDefinitions": [
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "agranom/service-auth"
+  },
+  "Ports": [
     {
-      "name": "service-auth",
-      "image": "agranom/service-auth",
-      "memory": 128,
-      "portMappings": [
-        {
-          "containerPort": "3001"
-        }
-      ],
-      "secrets": [
-        {
-          "name": "DB_URL",
-          "valueFrom": "arn:aws:ssm:us-east-2:378118473695:parameter/SVS_AUTH_DB_URL"
-        },
-        {
-          "name": "INTERNAL_PASSWORD",
-          "valueFrom": "arn:aws:ssm:us-east-2:378118473695:parameter/INTERNAL_PASSWORD"
-        }
-      ],
-      "environment": [
-        {
-          "name": "INTERNAL_USER",
-          "value": "agranom"
-        },
-        {
-          "name": "NODE_ENV",
-          "value": "production"
-        },
-        {
-          "name": "PORT",
-          "value": 3001
-        }
-      ]
+      "ContainerPort": "3001"
     }
   ]
 }
