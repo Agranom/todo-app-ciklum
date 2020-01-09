@@ -13,6 +13,7 @@ export class AuthService {
 
   private readonly authKey = 'auth/web-app';
   private readonly _isLoggedIn$ = new BehaviorSubject<boolean>(!!this.token);
+  private readonly baseUrl = environment.svcHostUrls.authSvc;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -26,7 +27,7 @@ export class AuthService {
   }
 
   signUp(newUser: NewUser): Observable<UserToken> {
-    const url = `${environment.svcBaseUrls.authSvc}/signup`;
+    const url = `${this.baseUrl}/signup`;
 
     return this.httpClient.post<UserToken>(url, newUser).pipe(
       map(response => deserialize(response, UserToken)),
@@ -36,7 +37,7 @@ export class AuthService {
   }
 
   signIn(email: string, password: string): Observable<UserToken> {
-    const url = `${environment.svcBaseUrls.authSvc}/signin`;
+    const url = `${this.baseUrl}/signin`;
 
     return this.httpClient.post<UserToken>(url, { email, password }).pipe(
       map(response => deserialize(response, UserToken)),

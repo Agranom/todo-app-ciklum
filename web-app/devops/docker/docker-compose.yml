@@ -1,11 +1,12 @@
 version: "3.5"
 services:
   web-app:
-    build:
-      context: .
-      dockerfile: ./devops/docker/Dockerfile
-      args:
-        env: prod
+    image: agranom/todo-web-app
+    networks:
+      - app-network
     ports:
       - "8000:80"
 
+networks:
+  app-network:
+    driver: bridge

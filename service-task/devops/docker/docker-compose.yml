@@ -11,7 +11,7 @@ services:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
   service:
-    image: service-task:latest
+    image: agranom/service-task
     networks:
       - default
     env_file:

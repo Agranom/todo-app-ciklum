@@ -11,11 +11,13 @@ import { User } from '../models';
 })
 export class UserService {
 
+  private readonly baseUrl = environment.svcHostUrls.authSvc;
+
   constructor(private httpClient: HttpClient) {
   }
 
   loadUser(): Observable<User> {
-    const url = `${environment.svcBaseUrls.authSvc}/api/me`;
+    const url = `${this.baseUrl}/api/me`;
 
     return this.httpClient.get<User>(url).pipe(
       map(response => deserialize(response, User))

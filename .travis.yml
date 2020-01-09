@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - 'node'
+branches:
+  only:
+    - master
 jobs:
   include:
     - stage: test
@@ -9,26 +12,23 @@ jobs:
         - npm run ci:install
         - npm run ci:test
     - stage: docker-deploy-image
+      if: type = push
       services: docker
       script:
         - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
         - npm run ci:docker:build
         - npm run ci:docker:publish
     - stage: deploy
+      if: type = push
       env:
         - AWS_BUCKET_NAME=elasticbeanstalk-us-east-2-378118473695
         - REGION=us-east-2
-        - FILE=Dockerrun.aws.json
+        - FILE=./devops/docker/Dockerrun.aws.json
       before_script:
-          - sudo pip install awscli
-          - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          - aws configure set default.region $REGION
+        - sudo pip install awscli
+        - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        - aws configure set default.region $REGION
       script: npm run ci:deploy
       after_success:
-        - echo "Application has been deployed"
-#      before_deploy:
-#
-#      deploy:
-#        - provider: script
-#          script: npm run ci:deploy
+        - echo "Applications have been deployed"
