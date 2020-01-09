@@ -3,8 +3,8 @@
 set -e
 
 versionLabel="v$TRAVIS_BUILD_NUMBER"
-s3Path="service-auth/$VERSION/"
-s3Key="$s3Path$VERSION"
+s3Path="service-auth/$versionLabel/"
+s3Key="$s3Path$versionLabel"
 
 # Add version
 sed -i "s/VERSION/$TRAVIS_BUILD_NUMBER/" $FILE

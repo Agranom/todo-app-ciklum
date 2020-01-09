@@ -1,16 +1,15 @@
 language: node_js
 node_js:
   - 'node'
-services:
-  - docker
-  - mongodb
 jobs:
   include:
     - stage: test
+      services: mongodb
       script:
         - npm run ci:install
         - npm run ci:test
     - stage: docker-deploy-image
+      services: docker
       script:
         - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
         - npm run ci:docker:build
@@ -26,7 +25,7 @@ jobs:
           - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           - aws configure set default.region $REGION
       script: npm run ci:deploy
-      after_script:
+      after_success:
         - echo "Application has been deployed"
 #      before_deploy:
 #
