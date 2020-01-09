@@ -2,12 +2,12 @@
 
 set -e
 
-versionLabel="v$VERSION"
+versionLabel="v$TRAVIS_BUILD_NUMBER"
 s3Path="service-auth/$VERSION/"
 s3Key="$s3Path$VERSION"
 
 # Add version
-sed -i "s/VERSION/$VERSION/" $FILE
+sed -i "s/VERSION/$TRAVIS_BUILD_NUMBER/" $FILE
 
 # Add the Dockerrun to S3 so that beanstalk can access it
 aws s3 cp $FILE s3://$AWS_BUCKET_NAME/$s3Path

@@ -2,10 +2,10 @@
 
 export IMAGE_NAME=agranom/service-auth
 
-if [ "$VERSION" = "" ];
+if [ "$TRAVIS_BUILD_NUMBER" = "" ];
   then
     export TAG=latest
   else
-    export TAG=$VERSION
+    export TAG=$TRAVIS_BUILD_NUMBER
 fi
 

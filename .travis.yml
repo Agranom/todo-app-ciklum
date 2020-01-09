@@ -6,11 +6,6 @@ services:
   - mongodb
 jobs:
   include:
-    - env:
-        - FILE=Dockerrun.aws.json
-        - VERSION=$TRAVIS_BUILD_NUMBER
-        - AWS_BUCKET_NAME=elasticbeanstalk-us-east-2-378118473695
-        - REGION=us-east-2
     - stage: test
       script:
         - npm run ci:install
@@ -21,12 +16,18 @@ jobs:
         - npm run ci:docker:build
         - npm run ci:docker:publish
     - stage: deploy
+      env:
+        - AWS_BUCKET_NAME=elasticbeanstalk-us-east-2-378118473695
+        - REGION=us-east-2
+        - FILE=Dockerrun.aws.json
       before_script:
           - sudo pip install awscli
           - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
           - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           - aws configure set default.region $REGION
       script: npm run ci:deploy
+      after_script:
+        - echo "Application has been deployed"
 #      before_deploy:
 #
 #      deploy:
