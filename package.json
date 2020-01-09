@@ -7,7 +7,8 @@
     "ci:install": "bash ./scripts/install.sh",
     "ci:test": "bash ./scripts/test.sh",
     "ci:docker:build": "bash ./scripts/docker-build.sh",
-    "ci:docker:publish": "bash ./scripts/docker-publish.sh"
+    "ci:docker:publish": "bash ./scripts/docker-publish.sh",
+    "ci:deploy": "npm run --prefix ./service-auth deploy"
   },
   "repository": {
     "type": "git",

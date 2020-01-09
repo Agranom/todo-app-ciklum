@@ -1,11 +1,27 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "agranom/service-auth"
-  },
-  "Ports": [
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
     {
-      "ContainerPort": "3001"
+      "name": "service-auth",
+      "image": "agranom/service-auth:VERSION",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 3001
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "PORT",
+          "value": 3001
+        }
+      ]
     }
   ]
 }

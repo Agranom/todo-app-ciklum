@@ -2,4 +2,4 @@
 
 source ./devops/definitions.sh
 
-docker push ${IMAGE_NAME}
+docker push $IMAGE_NAME:$TAG
