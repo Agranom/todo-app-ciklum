@@ -1,7 +1,7 @@
-import { User } from '../models/user.model';
-import { generateToken, verifyToken } from '../utils/auth';
 import { BasicStrategy } from 'passport-http';
 import passport from 'passport';
+import User from '../models/user.model';
+import { generateToken, verifyToken } from '../utils/auth';
 import { ErrorHandler } from '../utils/error-handler';
 
 passport.use(new BasicStrategy((username, password, done) => {
@@ -15,23 +15,23 @@ export const signup = async (req, res, next) => {
   const { email, password, ...rest } = req.body;
 
   if (!email || !password) {
-    return next(new ErrorHandler(400, 'Email or password is not valid'))
+    return next(new ErrorHandler(400, 'Email or password is not valid'));
   }
 
   try {
     const newUser = await User.create({
       email,
       password,
-      ...rest
+      ...rest,
     });
 
-    res.status(201).json({ token: generateToken(newUser.id) });
+    return res.status(201).json({ token: generateToken(newUser.id) });
   } catch (e) {
     console.error(e);
     if (e.name === 'MongoError' && e.code === 11000) {
       return next(new ErrorHandler(400, 'User with this email already exists'));
     }
-    next(new ErrorHandler())
+    return next(new ErrorHandler());
   }
 };
 
@@ -39,7 +39,7 @@ export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new ErrorHandler(400, 'Email or password is not valid'))
+    return next(new ErrorHandler(400, 'Email or password is not valid'));
   }
 
   try {
@@ -54,10 +54,10 @@ export const signin = async (req, res, next) => {
       return next(new ErrorHandler(401, 'Unauthorized'));
     }
 
-    res.status(200).json({ token: generateToken(user.id) });
+    return res.status(200).json({ token: generateToken(user.id) });
   } catch (e) {
     console.error(e);
-    next(new ErrorHandler());
+    return next(new ErrorHandler());
   }
 };
 
@@ -72,9 +72,9 @@ export const validateTokenAndReturnUser = async (req, res, next) => {
     const tokenPayload = await verifyToken(token);
     const user = await User.findOne({ _id: tokenPayload.id });
 
-    res.status(200).json({ ...user.toObject() });
+    return res.status(200).json({ ...user.toObject() });
   } catch (e) {
     console.error(e);
-    next(new ErrorHandler(401, 'Unauthorized'));
+    return next(new ErrorHandler(401, 'Unauthorized'));
   }
 };

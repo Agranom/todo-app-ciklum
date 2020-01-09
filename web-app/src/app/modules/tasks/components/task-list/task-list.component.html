@@ -1,5 +1,5 @@
 <div class="tasks">
-  <ng-container *ngIf="!(isLoading$ | async);else spinnerTmpl">
+  <ng-container *ngIf="(isLoading$ | async) === false;else spinnerTmpl">
     <div class="tasks-container" *ngIf="(tasks$ | async)?.length;else noTasksTmpl">
       <button mat-flat-button class="tasks-container__add-task-btn" color="primary" (click)="addTask()">
         <mat-icon>add</mat-icon>

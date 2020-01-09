@@ -1,21 +1,20 @@
 import request from 'supertest';
-import { app } from '../server';
-import { connect } from '../utils/db';
-import { User } from '../models/user.model';
 import faker from 'faker';
+import { app } from '../server';
+import connect from '../utils/db';
+import User from '../models/user.model';
 import { generateToken } from '../utils/auth';
 
 const testUser = {
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
   email: faker.internet.email(),
-  password: faker.internet.password()
+  password: faker.internet.password(),
 };
 let server;
 let db;
 
 describe('User API', () => {
-
   beforeEach(async (done) => {
     db = await connect();
     await User.deleteMany({});
@@ -31,7 +30,6 @@ describe('User API', () => {
   });
 
   describe('/GET /api/me', () => {
-
     it('should return user info', async () => {
       const user = await User.create(testUser);
       const token = generateToken(user.id);

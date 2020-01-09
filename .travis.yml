@@ -13,6 +13,9 @@ jobs:
         - npm run ci:test
     - stage: docker-deploy-image
       if: type = push
+      env:
+        - SVC_TASK_HOST_URL=http://service-task.us-east-2.elasticbeanstalk.com
+        - SVC_AUTH_HOST_URL=http://service-auth.us-east-2.elasticbeanstalk.com
       services: docker
       script:
         - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
