@@ -4,13 +4,13 @@ node_js:
 services:
   - docker
   - mongodb
-env:
-  - FILE=Dockerrun.aws.json
-  - VERSION=$TRAVIS_BUILD_NUMBER
-  - AWS_BUCKET_NAME=elasticbeanstalk-us-east-2-378118473695
-  - REGION=us-east-2
 jobs:
   include:
+    - env:
+        - FILE=Dockerrun.aws.json
+        - VERSION=$TRAVIS_BUILD_NUMBER
+        - AWS_BUCKET_NAME=elasticbeanstalk-us-east-2-378118473695
+        - REGION=us-east-2
     - stage: test
       script:
         - npm run ci:install
