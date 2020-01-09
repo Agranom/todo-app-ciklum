@@ -2,10 +2,10 @@
 
 set -e
 
-appName="service-auth"
-envName="ServiceAuth-env-1"
+appName="Service Task"
+envName="ServiceTask-env"
 versionLabel="v$TRAVIS_BUILD_NUMBER"
-s3Path="service-auth/$versionLabel/"
+s3Path="service-task/$versionLabel/"
 s3Key="$s3Path$FILE"
 
 echo "Application ${appName} is deploying"

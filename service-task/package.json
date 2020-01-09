@@ -16,7 +16,8 @@
     "restart": "rimraf dist && npm run build:dev && bash devops/scripts/start-local.sh",
     "docker:build": "bash ./devops/scripts/docker-build.sh",
     "docker:publish": "bash ./devops/scripts/docker-publish.sh",
-    "docker:run": "bash ./devops/scripts/docker-run.sh"
+    "docker:run": "bash ./devops/scripts/docker-run.sh",
+    "deploy": "bash ./devops/scripts/deploy.sh"
   },
   "author": "vitb@ciklum.com",
   "license": "ISC",

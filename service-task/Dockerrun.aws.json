@@ -1,11 +1,31 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "agranom/service-task"
-  },
-  "Ports": [
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
     {
-      "ContainerPort": "3000"
+      "name": "service-task",
+      "image": "agranom/service-task:VERSION",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 3000
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "PORT",
+          "value": 3000
+        },
+        {
+          "name": "SERVICE_AUTH_HOST_URL",
+          "value": "http://service-auth.us-east-2.elasticbeanstalk.com"
+        }
+      ]
     }
   ]
 }
