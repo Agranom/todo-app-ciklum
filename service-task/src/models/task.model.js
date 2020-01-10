@@ -15,24 +15,22 @@ const taskSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['undone', 'done'],
-    default: 'undone'
+    default: 'undone',
   },
   createdBy: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 }, { timestamps: true, autoIndex: false });
 
 taskSchema.set('toObject', {
   transform: (doc, ret) => {
-    ret.id = ret._id;
+    const {
+      _id, updatedAt, __v, createdBy, ...rest
+    } = ret;
 
-    delete ret._id;
-    delete ret.updatedAt;
-    delete ret.__v;
-    delete ret.createdBy;
-    return ret;
-  }
+    return { id: _id, ...rest };
+  },
 });
 
 export const Task = mongoose.model('Task', taskSchema);

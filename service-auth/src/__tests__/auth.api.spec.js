@@ -1,22 +1,21 @@
 import request from 'supertest';
+import faker from 'faker';
 import { app } from '../server';
 import { connect } from '../utils/db';
 import { User } from '../models/user.model';
-import faker from 'faker';
 import { generateToken } from '../utils/auth';
 
 const testUser = {
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
   email: faker.internet.email(),
-  password: faker.internet.password()
+  password: faker.internet.password(),
 };
 let server;
 let db;
 
 
 describe('Auth API', () => {
-
   beforeEach(async (done) => {
     db = await connect();
     await User.deleteMany({});
@@ -32,7 +31,6 @@ describe('Auth API', () => {
   });
 
   describe('/POST /signup', () => {
-
     it('should return 400 error when email or password is not provided', async () => {
       await request(app)
         .post('/signup')
@@ -64,7 +62,6 @@ describe('Auth API', () => {
   });
 
   describe('/POST /signin', () => {
-
     it('should return 400 error when email or password is not provided', async () => {
       await request(app)
         .post('/signin')
@@ -105,7 +102,7 @@ describe('Auth API', () => {
   });
 
   describe('/POST /api/internal/validate-token', () => {
-    const headers = { 'Authorization': 'Basic ' + Buffer.from('admin:admin').toString('base64') };
+    const headers = { Authorization: `Basic ${Buffer.from('admin:admin').toString('base64')}` };
     let token;
     let user;
 
@@ -119,7 +116,6 @@ describe('Auth API', () => {
         .post('/api/internal/validate-token')
         .send({ token })
         .expect(401);
-
     });
 
     it('should return 401 status code when token is not provided', async () => {

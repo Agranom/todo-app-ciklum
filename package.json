@@ -6,6 +6,8 @@
   "scripts": {
     "ci:install": "bash ./scripts/install.sh",
     "ci:test": "bash ./scripts/test.sh",
+    "ci:build": "bash ./scripts/build.sh",
+    "ci:lint": "bash ./scripts/lint.sh",
     "ci:docker:build": "bash ./scripts/docker-build.sh",
     "ci:docker:publish": "bash ./scripts/docker-publish.sh",
     "ci:deploy": "bash ./scripts/deploy.sh"

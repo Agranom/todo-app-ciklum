@@ -32,7 +32,8 @@
     "mongoose": "^5.8.1",
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
@@ -53,7 +54,6 @@
     "eslint-plugin-import": "^2.19.1",
     "faker": "^4.1.0",
     "jest": "^24.9.0",
-    "morgan": "^1.9.1",
     "progress-bar-webpack-plugin": "^1.12.1",
     "source-map-loader": "^0.2.4",
     "supertest": "^4.0.2",

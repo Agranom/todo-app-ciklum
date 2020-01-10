@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jasmine": true
   },
   "extends": "airbnb-base",
   "globals": {
@@ -14,6 +15,9 @@
   },
   "rules": {
     "semi": "error",
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "max-len": ["error", 120],
+    "no-unused-vars": "warn",
+    "import/prefer-default-export": "off"
   }
 }

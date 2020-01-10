@@ -54,7 +54,7 @@ describe('Tasks Store Integration', () => {
       it('should make an api call and return state with tasks', async(() => {
         const expected: TasksState = {
           entities: {
-            [tasks[0]['id']]: tasks[0]
+            [tasks[0].id]: tasks[0]
           },
           ids: [tasks[0].id],
           loading: false

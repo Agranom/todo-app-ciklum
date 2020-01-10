@@ -1,6 +1,0 @@
-{
-  "svcBaseUrls": {
-    "authSvc": "http://localhost:3001",
-    "taskSvc": "http://localhost:3000"
-  }
-}

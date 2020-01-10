@@ -4,12 +4,16 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build:prod": "ng build --prod",
+    "build:dev": "ng build",
     "test": "ng test --watch=false --code-coverage --browsers ChromeHeadlessNoSandbox",
     "test:watch": "ng test --watch=true --browsers ChromeHeadlessNoSandbox",
     "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
     "docker:build": "bash ./devops/scripts/docker-build.sh",
-    "docker:run": "bash ./devops/scripts/docker-run.sh"
+    "docker:publish": "bash ./devops/scripts/docker-publish.sh",
+    "docker:run": "bash ./devops/scripts/docker-run.sh",
+    "deploy": "bash ./devops/scripts/deploy.sh"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +38,7 @@
     "faker": "latest"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^8.4.1",
     "@angular-devkit/build-angular": "~0.803.21",
     "@angular/cli": "~8.3.21",
     "@angular/compiler-cli": "~8.2.14",

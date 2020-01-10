@@ -5,7 +5,7 @@ import { User } from '../models/user.model';
 
 const jwtOpts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: config.secrets.jwt
+  secretOrKey: config.secrets.jwt,
 };
 
 passport.use(new JwtStrategy(jwtOpts, async (jwtPayload, done) => {

@@ -1,5 +1,4 @@
 export class ErrorHandler extends Error {
-
   constructor(statusCode = 500, message = 'Internal Server Error', type = 'error') {
     super();
     this.type = type;

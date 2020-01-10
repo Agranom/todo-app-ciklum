@@ -12,13 +12,14 @@ import { NewUser, UserToken } from '../models';
 export class AuthService {
 
   private readonly authKey = 'auth/web-app';
-  private readonly _isLoggedIn$ = new BehaviorSubject<boolean>(!!this.token);
+  private readonly isLoggedInSubject$ = new BehaviorSubject<boolean>(!!this.token);
+  private readonly baseUrl = environment.svcHostUrls.authSvc;
 
   constructor(private httpClient: HttpClient) {
   }
 
   get isLoggedIn$(): Observable<boolean> {
-    return this._isLoggedIn$.asObservable().pipe(shareReplay({ bufferSize: 1, refCount: true }));
+    return this.isLoggedInSubject$.asObservable().pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   get token(): string {
@@ -26,28 +27,28 @@ export class AuthService {
   }
 
   signUp(newUser: NewUser): Observable<UserToken> {
-    const url = `${environment.svcBaseUrls.authSvc}/signup`;
+    const url = `${this.baseUrl}/signup`;
 
     return this.httpClient.post<UserToken>(url, newUser).pipe(
       map(response => deserialize(response, UserToken)),
       tap(({ token }) => this.saveToken(token)),
-      tap(() => this._isLoggedIn$.next(true))
+      tap(() => this.isLoggedInSubject$.next(true))
     );
   }
 
   signIn(email: string, password: string): Observable<UserToken> {
-    const url = `${environment.svcBaseUrls.authSvc}/signin`;
+    const url = `${this.baseUrl}/signin`;
 
     return this.httpClient.post<UserToken>(url, { email, password }).pipe(
       map(response => deserialize(response, UserToken)),
       tap(({ token }) => this.saveToken(token)),
-      tap(() => this._isLoggedIn$.next(true))
+      tap(() => this.isLoggedInSubject$.next(true))
     );
   }
 
   signOut(): Observable<void> {
     return of(sessionStorage.removeItem(this.authKey)).pipe(
-      tap(() => this._isLoggedIn$.next(false))
+      tap(() => this.isLoggedInSubject$.next(false))
     );
   }
 
