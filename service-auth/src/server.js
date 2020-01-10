@@ -4,7 +4,7 @@ import { json, urlencoded } from 'body-parser';
 import passport from 'passport';
 import cors from 'cors';
 import config from './config';
-import connect from './utils/db';
+import { connect } from './utils/db';
 import { signin, signup } from './controllers/auth.controllers';
 import userRouter from './routes/user.router';
 import authRouter from './routes/auth.router';

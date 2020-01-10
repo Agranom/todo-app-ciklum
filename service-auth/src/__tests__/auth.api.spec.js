@@ -1,8 +1,8 @@
 import request from 'supertest';
 import faker from 'faker';
 import { app } from '../server';
-import connect from '../utils/db';
-import User from '../models/user.model';
+import { connect } from '../utils/db';
+import { User } from '../models/user.model';
 import { generateToken } from '../utils/auth';
 
 const testUser = {

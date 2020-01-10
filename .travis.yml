@@ -10,7 +10,9 @@ jobs:
       services: mongodb
       script:
         - npm run ci:install
+        - npm run ci:lint
         - npm run ci:test
+        - npm run ci:build
     - stage: docker-deploy-image
       if: type = push
       env:

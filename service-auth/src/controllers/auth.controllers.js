@@ -1,6 +1,6 @@
 import { BasicStrategy } from 'passport-http';
 import passport from 'passport';
-import User from '../models/user.model';
+import { User } from '../models/user.model';
 import { generateToken, verifyToken } from '../utils/auth';
 import { ErrorHandler } from '../utils/error-handler';
 

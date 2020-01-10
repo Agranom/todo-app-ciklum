@@ -17,6 +17,7 @@
     "semi": "error",
     "quotes": ["error", "single"],
     "max-len": ["error", 120],
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "import/prefer-default-export": "off"
   }
 }
