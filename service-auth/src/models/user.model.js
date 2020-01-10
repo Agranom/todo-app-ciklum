@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { FileUploader } from '../utils/file-uploader';
+import { ErrorHandler } from '../utils/error-handler';
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -20,9 +22,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  avatar: Object,
 });
 
-userSchema.pre('save', function preSave(next) {
+userSchema.pre('save', function hashPassword(next) {
   if (!this.isModified('password')) {
     return next();
   }
@@ -35,6 +38,22 @@ userSchema.pre('save', function preSave(next) {
     this.password = hash;
     return next();
   });
+});
+
+userSchema.pre('save', async function uploadAvatar(next) {
+  if (!this.isModified('avatar')) {
+    return next();
+  }
+  const fileUploader = new FileUploader();
+
+  try {
+    const { Location } = await fileUploader.uploadImageToAwsBucket(this.avatar);
+    this.avatar = Location;
+
+    return next();
+  } catch (e) {
+    return next(new ErrorHandler(400, e.message));
+  }
 });
 
 userSchema.set('toObject', {

@@ -36,6 +36,8 @@ services:
     build:
       context: ./web-app
       dockerfile: ./devops/docker/Dockerfile
+      args:
+        - ENVIRONMENT=dev
     ports:
       - "8000:80"
     networks:

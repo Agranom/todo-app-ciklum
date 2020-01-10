@@ -15,7 +15,7 @@ export const app = express();
 
 app.use(express.static('public'));
 app.use(cors());
-app.use(json());
+app.use(json({ limit: '5mb' }));
 app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(passport.initialize());

@@ -20,6 +20,14 @@
         {
           "name": "PORT",
           "value": 3001
+        },
+        {
+          "name": "AWS_ASSETS_BUCKET_NAME",
+          "value": "todo-app-assets"
+        },
+        {
+          "name": "AWS_ASSETS_BUCKET_REGION",
+          "value": "eu-central-1"
         }
       ]
     }

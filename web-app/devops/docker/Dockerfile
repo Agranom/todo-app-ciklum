@@ -1,17 +1,12 @@
-ARG SVC_AUTH_HOST_URL=http://localhost:3001
-ARG SVC_TASK_HOST_URL=http://localhost:3000
+ARG ENVIRONMENT=prod
 
 ### STAGE 1: Build ###
 FROM node as build
-
-ENV SERVICE_AUTH_HOST_URL=$SVC_AUTH_HOST_URL
-ENV SERVICE_TASK_HOST_URL=$SVC_TASK_HOST_URL
-
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm i
 COPY . .
-RUN npm run build:prod
+RUN npm run build:$ENVIRONMENT
 RUN rm -rf node_modules/
 
 ### STAGE 2: Run ###

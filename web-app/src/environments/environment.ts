@@ -2,11 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
+
 export const environment = {
   production: false,
   svcHostUrls: {
-    authSvc: $ENV.authHostSvc || 'http://localhost:3001',
-    taskSvc: $ENV.taskHostSvc || 'http://localhost:3000'
+    authSvc: 'http://localhost:3001',
+    taskSvc: 'http://localhost:3000'
   }
 };
 

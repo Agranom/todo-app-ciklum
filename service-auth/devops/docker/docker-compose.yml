@@ -15,6 +15,7 @@ services:
     networks:
       - default
     env_file:
+      - ./../../.env
       - ./../config/local.env
     ports:
       - "3001:3001"

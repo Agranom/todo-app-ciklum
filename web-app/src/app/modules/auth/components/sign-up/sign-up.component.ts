@@ -37,12 +37,31 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  onAvatarChange(target: EventTarget) {
+    // @ts-ignore
+    const files: File[] = target.files;
+
+    if (files && files.length > 0) {
+      const reader = new FileReader();
+      const file = files[0];
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.signUpForm.get('avatar').patchValue({
+          fileName: file.name,
+          fileType: file.type,
+          fileContent: reader.result
+        });
+      };
+    }
+  }
+
   private buildForm(): FormGroup {
     return this.fb.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required]],
       firstName: '',
-      lastName: ''
+      lastName: '',
+      avatar: ''
     });
   }
 

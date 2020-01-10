@@ -1,4 +1,4 @@
-import { Field } from 'serialize-ts/dist';
+import { Field, Name } from 'serialize-ts/dist';
 
 export class User {
 
@@ -13,4 +13,8 @@ export class User {
 
   @Field()
   lastName?: string;
+
+  @Field()
+  @Name('avatar')
+  avatarSrc?: string;
 }

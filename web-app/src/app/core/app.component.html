@@ -2,7 +2,7 @@
   <span>ToDo App</span>
   <div class="user-profile" *ngIf="isLoggedIn$ | async">
     <div class="user-profile__image">
-      <img src="https://sun9-4.userapi.com/c824201/v824201969/173426/YW0DIgHPsvw.jpg?ava=1"
+      <img [src]="(user$ | async)?.avatarSrc"
            alt="user-avatar">
     </div>
     <div class="user-profile__name">
