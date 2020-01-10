@@ -1,4 +1,3 @@
-ARG env=prod
 ARG SVC_AUTH_HOST_URL=http://localhost:3001
 ARG SVC_TASK_HOST_URL=http://localhost:3000
 
@@ -12,7 +11,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm i
 COPY . .
-RUN npm run build:$env
+RUN npm run build:prod
 RUN rm -rf node_modules/
 
 ### STAGE 2: Run ###
