@@ -1,6 +1,6 @@
-import { validateTokenAndReturnUser } from '../controllers/auth.controllers';
 import passport from 'passport';
 import { Router } from 'express';
+import { validateTokenAndReturnUser } from '../controllers/auth.controllers';
 
 const router = Router();
 

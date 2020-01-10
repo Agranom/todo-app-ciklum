@@ -4,52 +4,50 @@ import bcrypt from 'bcryptjs';
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    trim: true
+    trim: true,
   },
   lastName: {
     type: String,
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
   },
   password: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function preSave(next) {
   if (!this.isModified('password')) {
     return next();
   }
 
-  bcrypt.hash(this.password, 8, (err, hash) => {
+  return bcrypt.hash(this.password, 8, (err, hash) => {
     if (err) {
       return next(err);
     }
 
     this.password = hash;
-    next();
+    return next();
   });
 });
 
 userSchema.set('toObject', {
   transform: (doc, ret) => {
-    ret.id = ret._id;
+    const {
+      _id, __v, password, ...rest
+    } = ret;
 
-    delete ret.__v;
-    delete ret.password;
-    delete ret._id;
-
-    return ret;
-  }
+    return { id: _id, ...rest };
+  },
 });
 
-userSchema.methods.validatePassword = function (password) {
+userSchema.methods.validatePassword = function validatePassword(password) {
   const passwordHash = this.password;
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, passwordHash, (err, same) => {
@@ -57,10 +55,9 @@ userSchema.methods.validatePassword = function (password) {
         return reject(err);
       }
 
-      resolve(same);
+      return resolve(same);
     });
   });
-
 };
 
 export const User = mongoose.model('User', userSchema);

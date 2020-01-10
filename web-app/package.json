@@ -9,6 +9,7 @@
     "test": "ng test --watch=false --code-coverage --browsers ChromeHeadlessNoSandbox",
     "test:watch": "ng test --watch=true --browsers ChromeHeadlessNoSandbox",
     "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
     "docker:build": "bash ./devops/scripts/docker-build.sh",
     "docker:publish": "bash ./devops/scripts/docker-publish.sh",
     "docker:run": "bash ./devops/scripts/docker-run.sh",

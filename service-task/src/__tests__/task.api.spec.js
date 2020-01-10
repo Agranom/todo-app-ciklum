@@ -1,11 +1,11 @@
 import request from 'supertest';
-import { app } from '../server';
-import { Task } from '../models/task.model';
-import { connect } from '../utils/db';
 import faker from 'faker';
 import nock from 'nock';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import { connect } from '../utils/db';
+import { Task } from '../models/task.model';
+import { app } from '../server';
 
 const userId = mongoose.Types.ObjectId();
 const task = {
@@ -14,13 +14,13 @@ const task = {
   status: 'undone',
   createdBy: userId,
 };
-const toJSON = obj => JSON.parse(JSON.stringify(obj));
+const toJSON = (obj) => JSON.parse(JSON.stringify(obj));
 const token = jwt.sign({ id: userId }, 'test_secret');
 let server;
 let db;
 
 describe('Task API', () => {
-  const headers = { 'Authorization': `Bearer ${token}` };
+  const headers = { Authorization: `Bearer ${token}` };
 
   beforeEach(async (done) => {
     db = await connect();
@@ -41,7 +41,6 @@ describe('Task API', () => {
   });
 
   describe('/GET /api/task', () => {
-
     it('should return all tasks', async () => {
       const newTask = await Task.create(task);
       const serializedTask = toJSON(newTask.toObject());
@@ -62,7 +61,6 @@ describe('Task API', () => {
   });
 
   describe('/GET /api/task/:id', () => {
-
     it('should return task by id', async () => {
       const newTask = await Task.create(task);
       const serializedTask = toJSON(newTask.toObject());
@@ -88,16 +86,15 @@ describe('Task API', () => {
   });
 
   describe('/POST task', () => {
-
     it('should create new task', async () => {
-
       const { body } = await request(app)
         .post('/api/task')
         .set(headers)
         .send({
           title: task.title,
-          description: task.description
-        }).expect(201);
+          description: task.description,
+        })
+        .expect(201);
 
       expect(body.title).toBe(task.title);
       expect(body.description).toBe(task.description);
@@ -114,13 +111,13 @@ describe('Task API', () => {
         .send({
           title: task.title,
           description: task.description,
-          status: faker.random.word()
-        }).expect(400);
+          status: faker.random.word(),
+        })
+        .expect(400);
     });
   });
 
   describe('/PUT /api/task/:id', () => {
-
     it('should update task return 204', async () => {
       const newTask = await Task.create(task);
       const serializedTask = toJSON(newTask.toObject());
@@ -138,7 +135,7 @@ describe('Task API', () => {
 
     it('should return 404 status code when none task is found by id', async () => {
       await request(app)
-        .put(`/api/task/5df7b7baf3912835f71c3f8b`)
+        .put('/api/task/5df7b7baf3912835f71c3f8b')
         .set(headers)
         .send({ title: faker.random.word() })
         .expect(404);
@@ -146,7 +143,6 @@ describe('Task API', () => {
   });
 
   describe('/DELETE /api/task/:id', () => {
-
     it('should delete task by id', async () => {
       const newTask = await Task.create(task);
       const { id } = newTask.toObject();
@@ -164,7 +160,7 @@ describe('Task API', () => {
 
     it('should return 404 status code when none task found', async () => {
       await request(app)
-        .delete(`/api/task/5df7b7baf3912835f71c3f8b`)
+        .delete('/api/task/5df7b7baf3912835f71c3f8b')
         .set(headers)
         .expect(404);
     });

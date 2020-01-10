@@ -1,4 +1,7 @@
 import { merge } from 'lodash';
+import devConfig from './dev';
+import prodConfig from './prod';
+import testingConfig from './testing';
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -7,8 +10,8 @@ const baseConfig = {
   port: process.env.PORT || 8000,
   secrets: {
     jwt: process.env.JWT_SECRET || 'jwt_secret',
-    jwtExp: '1d'
-  }
+    jwtExp: '1d',
+  },
 };
 
 let envConfig = {};
@@ -16,18 +19,18 @@ let envConfig = {};
 switch (env) {
   case 'prod':
   case 'production':
-    envConfig = require('./prod').config;
+    envConfig = prodConfig;
     break;
   case 'dev':
   case 'development':
-    envConfig = require('./dev').config;
+    envConfig = devConfig;
     break;
   case 'test':
   case 'testing':
-    envConfig = require('./testing').config;
+    envConfig = testingConfig;
     break;
   default:
-    envConfig = require('./dev').config;
+    envConfig = devConfig;
 }
 
 
