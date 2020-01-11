@@ -1,7 +1,7 @@
-ARG ENVIRONMENT=prod
-
 ### STAGE 1: Build ###
 FROM node as build
+ARG ENVIRONMENT=prod
+
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm i

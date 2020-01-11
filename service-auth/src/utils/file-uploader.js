@@ -14,11 +14,7 @@ export class FileUploader {
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       region: process.env.AWS_ASSETS_BUCKET_REGION,
     });
-    this.awsBucket = new AWS.S3({
-      params: {
-        Bucket: process.env.AWS_ASSETS_BUCKET_NAME,
-      },
-    });
+    this.awsBucket = new AWS.S3();
   }
 
   /**
@@ -30,8 +26,10 @@ export class FileUploader {
   uploadImageToAwsBucket(image) {
     try {
       const buffer = Buffer.from(image.fileContent.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+      const imageName = `${Date.now()}-${image.fileName}`;
       const bucketParams = {
-        Key: `images/${image.fileName}`,
+        Bucket: process.env.AWS_ASSETS_BUCKET_NAME,
+        Key: `images/${imageName}`,
         Body: buffer,
         ACL: 'public-read',
         ContentEncoding: 'base64',

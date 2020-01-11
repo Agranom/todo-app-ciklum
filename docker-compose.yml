@@ -15,6 +15,7 @@ services:
     networks:
       - app-network
     env_file:
+      - ./service-auth/.env
       - ./service-auth/devops/config/local.env
     ports:
       - "3001:3001"
@@ -35,9 +36,9 @@ services:
     image: agranom/todo-web-app
     build:
       context: ./web-app
-      dockerfile: ./devops/docker/Dockerfile
       args:
-        - ENVIRONMENT=dev
+        ENVIRONMENT: dev
+      dockerfile: ./devops/docker/Dockerfile
     ports:
       - "8000:80"
     networks:

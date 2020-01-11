@@ -49,7 +49,7 @@ module.exports = {
     module: false,
     clearImmediate: false,
     setImmediate: false,
-    __dirname: true,
+    __dirname: false,
     __filename: false,
   },
   plugins: [

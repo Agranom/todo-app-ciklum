@@ -6,7 +6,7 @@ NC='\033[0m' # No Color
 
 if [ -f '.env' ]; then
     printf "Gonna load root .env file ";
-    source '.env';
+    export $(grep -v '^#' .env | xargs)
 
     if [ $? -eq 0 ]; then
         printf "${GREEN}[Ok]${NC}\n";

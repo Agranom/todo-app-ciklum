@@ -32,6 +32,24 @@
                   },
                   "lastName": {
                     "type": "string"
+                  },
+                  "avatar": {
+                    "type": "object",
+                    "properties": {
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "fileType": {
+                        "type": "string",
+                        "example": {
+                          "fileType": "image/png"
+                        }
+                      },
+                      "fileContent": {
+                        "type": "string",
+                        "description": "image in base64 format"
+                      }
+                    }
                   }
                 }
               }
@@ -206,6 +224,9 @@
             "type": "string"
           },
           "lastName": {
+            "type": "string"
+          },
+          "avatar": {
             "type": "string"
           }
         }

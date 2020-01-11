@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
 export const start = async () => {
   try {
     await connect();
-    app.listen(config.port, () => console.log(`Server is running on port ${config.port}`));
+    app.listen(config.port, () => console.info(`Server is running on port ${config.port}`));
   } catch (e) {
     console.error(e);
   }
