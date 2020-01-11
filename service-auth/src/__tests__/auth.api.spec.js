@@ -90,6 +90,7 @@ describe('Auth API', () => {
     });
 
     it('should return token when sign in successfully', async () => {
+      await User.create(testUser);
       const { body } = await request(app)
         .post('/signin')
         .send({ email: testUser.email, password: testUser.password })
