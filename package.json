@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docker:run": "bash ./scripts/docker-run.sh",
     "ci:install": "bash ./scripts/install.sh",
     "ci:test": "bash ./scripts/test.sh",
     "ci:build": "bash ./scripts/build.sh",
