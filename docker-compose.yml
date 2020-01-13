@@ -2,8 +2,6 @@ version: "3.5"
 services:
   database:
     image: mongo:4.0.4
-    networks:
-      - app-network
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
@@ -12,8 +10,6 @@ services:
     build:
       context: ./service-auth
       dockerfile: ./devops/docker/Dockerfile
-    networks:
-      - app-network
     env_file:
       - ./service-auth/.env
       - ./service-auth/devops/config/local.env
@@ -25,8 +21,6 @@ services:
     build:
       context: ./service-task
       dockerfile: ./devops/docker/Dockerfile
-    networks:
-      - app-network
     env_file:
       - ./service-task/devops/config/local.env
     ports:
@@ -41,13 +35,8 @@ services:
       dockerfile: ./devops/docker/Dockerfile
     ports:
       - "8000:80"
-    networks:
-      - app-network
 
 
 volumes:
   mongodb:
   mongodb_config:
-networks:
-  app-network:
-    driver: bridge

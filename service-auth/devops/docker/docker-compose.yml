@@ -1,19 +1,12 @@
 version: "3.5"
-networks:
-  default:
-    driver: bridge
 services:
   database:
     image: mongo:4.0.4
-    networks:
-      - default
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
   service:
     image: agranom/service-auth
-    networks:
-      - default
     env_file:
       - ./../../.env
       - ./../config/local.env

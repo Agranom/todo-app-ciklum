@@ -1,5 +1,5 @@
 ### STAGE 1: Build ###
-FROM node as build
+FROM node:12.14.1 as build
 ARG ENVIRONMENT=prod
 
 WORKDIR /usr/src/app
