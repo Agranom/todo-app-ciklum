@@ -5,9 +5,8 @@ import passport from 'passport';
 import cors from 'cors';
 import config from './config';
 import { connect } from './utils/db';
-import { signin, signup } from './controllers/auth.controllers';
-import userRouter from './routes/user.router';
-import authRouter from './routes/auth.router';
+import { userRouter } from './components/user';
+import { authRouter } from './components/auth';
 import { handleError } from './utils/error-handler';
 
 
@@ -20,10 +19,8 @@ app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(passport.initialize());
 
-app.post('/signup', signup);
-app.post('/signin', signin);
+app.use('/', authRouter);
 app.use('/api/me', userRouter);
-app.use('/api/internal/validate-token', authRouter);
 app.use((err, req, res, next) => {
   handleError(err, res);
 });

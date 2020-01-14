@@ -1,7 +1,7 @@
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import passport from 'passport';
-import config from '../config';
-import { User } from '../models/user.model';
+import config from '../../config';
+import { User } from './user.model';
 
 const jwtOpts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,4 +21,10 @@ passport.use(new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
   }
 }));
 
-export const getProfile = (req, res) => res.status(200).json({ ...req.user.toObject() });
+export class UserController {
+  static getProfile(req, res) {
+    res.status(200).json({
+      ...req.user.toObject(),
+    });
+  }
+}

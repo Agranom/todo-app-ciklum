@@ -4,7 +4,7 @@ import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
 import config from './config';
 import { connect } from './utils/db';
-import taskRouter from './routes/task.router';
+import { taskRouter } from './components/task';
 import { validateTokenAndGetUser } from './utils/auth';
 
 export const app = express();

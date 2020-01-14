@@ -1,9 +1,9 @@
 import request from 'supertest';
 import faker from 'faker';
-import { app } from '../server';
-import { connect } from '../utils/db';
-import { User } from '../models/user.model';
-import { generateToken } from '../utils/auth';
+import { app } from '../../../server';
+import { connect } from '../../../utils/db';
+import { User } from '../user.model';
+import { AuthService } from '../../auth';
 
 const testUser = {
   firstName: faker.name.firstName(),
@@ -32,7 +32,7 @@ describe('User API', () => {
   describe('/GET /api/me', () => {
     it('should return user info', async () => {
       const user = await User.create(testUser);
-      const token = generateToken(user.id);
+      const token = AuthService.generateToken(user.id);
       const serializedUser = user.toObject();
       const { body } = await request(app)
         .get('/api/me')
