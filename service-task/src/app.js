@@ -2,9 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
-import config from './config';
-import { connect } from './utils/db';
-import taskRouter from './routes/task.router';
+import { taskRouter } from './components/task';
 import { validateTokenAndGetUser } from './utils/auth';
 
 export const app = express();
@@ -16,12 +14,3 @@ app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.use('/api/task', validateTokenAndGetUser, taskRouter);
-
-export const start = async () => {
-  try {
-    await connect();
-    app.listen(config.port, () => console.info(`Server is running on port ${config.port}`));
-  } catch (e) {
-    console.error(e);
-  }
-};

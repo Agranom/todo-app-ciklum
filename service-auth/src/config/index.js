@@ -9,7 +9,7 @@ const baseConfig = {
   env,
   port: process.env.PORT || 8000,
   secrets: {
-    jwt: process.env.JWT_SECRET || 'jwt_secret',
+    jwt: process.env.JWT_SECRET,
     jwtExp: '1d',
   },
 };

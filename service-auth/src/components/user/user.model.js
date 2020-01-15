@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { FileUploader } from '../utils/file-uploader';
-import { ErrorHandler } from '../utils/error-handler';
+import { FileUploader } from '../../utils/file-uploader';
+import { ErrorHandler } from '../../utils/error-handler';
 
 const userSchema = new mongoose.Schema({
   firstName: {

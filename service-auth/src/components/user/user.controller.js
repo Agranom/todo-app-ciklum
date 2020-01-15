@@ -1,7 +1,10 @@
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import passport from 'passport';
-import config from '../config';
-import { User } from '../models/user.model';
+import config from '../../config';
+import { UserService } from './user.service';
+import { User } from './user.model';
+
+const userService = new UserService(User);
 
 const jwtOpts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -10,7 +13,7 @@ const jwtOpts = {
 
 passport.use(new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
   try {
-    const user = await User.findOne({ _id: jwtPayload.id });
+    const user = await userService.getUserById(jwtPayload.id);
     if (!user) {
       return done(null, false);
     }
@@ -21,4 +24,10 @@ passport.use(new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
   }
 }));
 
-export const getProfile = (req, res) => res.status(200).json({ ...req.user.toObject() });
+export class UserController {
+  static getProfile(req, res) {
+    res.status(200).json({
+      ...req.user.toObject(),
+    });
+  }
+}

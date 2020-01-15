@@ -1,9 +1,9 @@
 import request from 'supertest';
 import faker from 'faker';
-import { app } from '../server';
-import { connect } from '../utils/db';
-import { User } from '../models/user.model';
-import { generateToken } from '../utils/auth';
+import { app } from '../../../app';
+import { connect } from '../../../utils/db';
+import { User } from '../../user/user.model';
+import { AuthService } from '../auth.service';
 
 const testUser = {
   firstName: faker.name.firstName(),
@@ -107,7 +107,7 @@ describe('Auth API', () => {
 
     beforeEach(async () => {
       user = await User.create({ email: faker.internet.email(), password: faker.internet.password() });
-      token = generateToken(user.id);
+      token = AuthService.generateToken(user.id);
     });
 
     it('should return 401 status code when auth header is not provided', async () => {
@@ -129,7 +129,7 @@ describe('Auth API', () => {
       await request(app)
         .post('/api/internal/validate-token')
         .set(headers)
-        .send({ token: generateToken(faker.random.uuid()) })
+        .send({ token: AuthService.generateToken(faker.random.uuid()) })
         .expect(401);
     });
 
