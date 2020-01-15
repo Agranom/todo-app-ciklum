@@ -1,15 +1,8 @@
-import { BasicStrategy } from 'passport-http';
-import passport from 'passport';
 import { ErrorHandler } from '../../utils/error-handler';
 import { AuthService } from './auth.service';
 import { User } from '../user';
 
-passport.use(new BasicStrategy((username, password, done) => {
-  if (username === process.env.INTERNAL_USER && password === process.env.INTERNAL_PASSWORD) {
-    return done(null, true);
-  }
-  return done({ statusCode: 401 });
-}));
+const authService = new AuthService(User);
 
 export class AuthController {
   static async signup(req, res, next) {
@@ -20,19 +13,12 @@ export class AuthController {
     }
 
     try {
-      const newUser = await User.create({
-        email,
-        password,
-        ...rest,
-      });
+      const newUser = await authService.signup({ email, password, ...rest });
 
       return res.status(201).json({ token: AuthService.generateToken(newUser.id) });
     } catch (e) {
       console.error(e);
-      if (e.name === 'MongoError' && e.code === 11000) {
-        return next(new ErrorHandler(400, 'User with this email already exists'));
-      }
-      return next(new ErrorHandler());
+      return next(e);
     }
   }
 
@@ -44,7 +30,7 @@ export class AuthController {
     }
 
     try {
-      const user = await User.findOne({ email });
+      const user = await authService.signin(email);
 
       if (!user) {
         return next(new ErrorHandler(401, 'Unauthorized'));
@@ -58,7 +44,7 @@ export class AuthController {
       return res.status(200).json({ token: AuthService.generateToken(user.id) });
     } catch (e) {
       console.error(e);
-      return next(new ErrorHandler());
+      return next(e);
     }
   }
 
@@ -70,13 +56,12 @@ export class AuthController {
     }
 
     try {
-      const tokenPayload = await AuthService.verifyToken(token);
-      const user = await User.findOne({ _id: tokenPayload.id });
+      const user = await authService.validateTokenAndReturnUser(token);
 
       return res.status(200).json({ ...user.toObject() });
     } catch (e) {
       console.error(e);
-      return next(new ErrorHandler(401, 'Unauthorized'));
+      return next(e);
     }
   }
 }

@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { connect } from '../../../utils/db';
 import { Task } from '../task.model';
-import { app } from '../../../server';
+import { app } from '../../../app';
 
 const userId = mongoose.Types.ObjectId();
 const task = {

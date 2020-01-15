@@ -5,13 +5,13 @@ const router = Router();
 
 // api/task
 router.route('/')
-  .get(TaskController.getMany)
-  .post(TaskController.createOne);
+  .get(TaskController.getTasks)
+  .post(TaskController.createTask);
 
 // api/task/:id
 router.route('/:id')
-  .get(TaskController.getOne)
-  .put(TaskController.updateOne)
-  .delete(TaskController.removeOne);
+  .get(TaskController.getTask)
+  .put(TaskController.updateTask)
+  .delete(TaskController.removeTask);
 
 export default router;

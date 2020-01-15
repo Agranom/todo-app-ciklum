@@ -1,6 +1,6 @@
 import request from 'supertest';
 import faker from 'faker';
-import { app } from '../../../server';
+import { app } from '../../../app';
 import { connect } from '../../../utils/db';
 import { User } from '../user.model';
 import { AuthService } from '../../auth';

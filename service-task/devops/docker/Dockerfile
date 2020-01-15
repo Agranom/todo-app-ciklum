@@ -1,4 +1,4 @@
-FROM node
+FROM node:12.14.1
 MAINTAINER Vitalii Boiko
 
 ARG DB_URL

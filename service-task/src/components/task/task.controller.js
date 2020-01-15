@@ -1,53 +1,51 @@
 import { Task } from './task.model';
+import { TaskService } from './task.service';
+
+const taskService = new TaskService(Task);
 
 export class TaskController {
-  static async getOne(req, res) {
+  static async getTask(req, res) {
     try {
-      const item = await Task
-        .findOne({ _id: req.params.id, createdBy: req.user.id });
+      const task = await taskService.getTask(req.params.id, req.user.id);
 
-      if (!item) {
+      if (!task) {
         return res.status(404).end();
       }
 
-      return res.status(200).json({ ...item.toObject() });
+      return res.status(200).json({ ...task });
     } catch (e) {
       console.error(e);
       return res.status(500).end();
     }
   }
 
-  static async getMany(req, res) {
+  static async getTasks(req, res) {
     try {
-      const items = await Task.find({ createdBy: req.user.id });
-      const serializedItems = items.map((item) => item.toObject());
+      const tasks = await taskService.getTasksByUserId(req.user.id);
 
-      return res.status(200).json({ items: serializedItems });
+      return res.status(200).json({ items: tasks });
     } catch (e) {
       console.error(e);
       return res.status(500).end();
     }
   }
 
-  static async createOne(req, res) {
+  static async createTask(req, res) {
     try {
-      const item = await Task.create({ ...req.body, createdBy: req.user.id });
+      const newTask = await taskService.createTask(req.body, req.user.id);
 
-      return res.status(201).json({ ...item.toObject() });
+      return res.status(201).json({ ...newTask });
     } catch (e) {
       console.error(e);
       return res.status(400).end();
     }
   }
 
-  static async updateOne(req, res) {
+  static async updateTask(req, res) {
     try {
-      const updatedItem = await Task
-        .findOneAndUpdate({ _id: req.params.id, createdBy: req.user.id }, req.body, { new: true })
-        .lean()
-        .exec();
+      const updatedTask = await taskService.updateTask(req.params.id, req.user.id, req.body);
 
-      if (!updatedItem) {
+      if (!updatedTask) {
         return res.status(404).end();
       }
 
@@ -58,12 +56,9 @@ export class TaskController {
     }
   }
 
-  static async removeOne(req, res) {
+  static async removeTask(req, res) {
     try {
-      const removedItem = await Task
-        .findOneAndRemove({ _id: req.params.id, createdBy: req.user.id })
-        .lean()
-        .exec();
+      const removedItem = await taskService.removeTask(req.params.id, req.user.id);
 
       if (!removedItem) {
         return res.status(404).end();
