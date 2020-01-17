@@ -1,26 +1,34 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { FileUploader } from '../../utils/file-uploader';
-import { ErrorHandler } from '../../utils/error-handler';
+import { AppError } from '../shared/errors';
 
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
+    maxlength: [55, 'First name must be less then 55 characters'],
   },
   lastName: {
     type: String,
     trim: true,
+    maxlength: [55, 'Last name must be less then 55 characters'],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     unique: true,
     trim: true,
+    match: [
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Email is not valid',
+    ],
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Password is required'],
+    trim: true,
+    minlength: [3, 'Password must have at least 3 characters'],
   },
   avatar: Object,
 });
@@ -32,7 +40,7 @@ userSchema.pre('save', function hashPassword(next) {
 
   return bcrypt.hash(this.password, 8, (err, hash) => {
     if (err) {
-      return next(err);
+      return next(new AppError(400, err.message));
     }
 
     this.password = hash;
@@ -52,7 +60,7 @@ userSchema.pre('save', async function uploadAvatar(next) {
 
     return next();
   } catch (e) {
-    return next(new ErrorHandler(400, e.message));
+    return next(e);
   }
 });
 
@@ -69,12 +77,12 @@ userSchema.set('toObject', {
 userSchema.methods.validatePassword = function validatePassword(password) {
   const passwordHash = this.password;
   return new Promise((resolve, reject) => {
-    bcrypt.compare(password, passwordHash, (err, same) => {
+    bcrypt.compare(password, passwordHash, (err, isSame) => {
       if (err) {
-        return reject(err);
+        return reject(new AppError(400, err.message));
       }
 
-      return resolve(same);
+      return resolve(isSame);
     });
   });
 };

@@ -19,7 +19,6 @@ passport.use(new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
     }
     return done(null, user);
   } catch (e) {
-    console.error(e);
     return done(e, false);
   }
 }));

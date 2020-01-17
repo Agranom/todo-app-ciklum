@@ -21,19 +21,12 @@
     ],
     "max-len": [
       "error",
-      120
+      120,
+      {
+        "ignoreRegExpLiterals": true
+      }
     ],
     "no-unused-vars": "warn",
-    "import/prefer-default-export": "off",
-    "no-console": [
-      "error",
-      {
-        "allow": [
-          "warn",
-          "error",
-          "info"
-        ]
-      }
-    ]
+    "import/prefer-default-export": "off"
   }
 }

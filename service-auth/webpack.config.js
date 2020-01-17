@@ -50,7 +50,7 @@ module.exports = {
     module: false,
     clearImmediate: false,
     setImmediate: false,
-    __dirname: false,
+    __dirname: true,
     __filename: false,
   },
   plugins: [

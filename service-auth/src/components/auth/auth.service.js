@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../../config';
-import { ErrorHandler } from '../../utils/error-handler';
+import { AppError, mongoErrorTypes, ValidationError } from '../shared/errors';
 
 export class AuthService {
   constructor(userModel) {
@@ -16,7 +16,7 @@ export class AuthService {
   static verifyToken(token) {
     return jwt.verify(token, config.secrets.jwt, (err, payload) => {
       if (err) {
-        throw new ErrorHandler(400, err.message);
+        throw new AppError(400, err.message);
       }
       return payload;
     });
@@ -26,10 +26,13 @@ export class AuthService {
     try {
       return await this.userModel.create(data);
     } catch (e) {
-      if (e.name === 'MongoError' && e.code === 11000) {
-        throw new ErrorHandler(400, 'User with this email already exists');
+      if (e.name === mongoErrorTypes.mongoError && e.code === 11000) {
+        throw new AppError(400, 'User with this email already exists');
       }
-      throw new ErrorHandler();
+      if (e.name === mongoErrorTypes.validationError) {
+        throw new ValidationError(e.errors);
+      }
+      throw new AppError(500, e.message);
     }
   }
 
@@ -37,7 +40,7 @@ export class AuthService {
     try {
       return await this.userModel.findOne({ email });
     } catch (e) {
-      throw new ErrorHandler();
+      throw new AppError(500, e.message);
     }
   }
 
@@ -46,8 +49,7 @@ export class AuthService {
       const tokenPayload = AuthService.verifyToken(token);
       return await this.userModel.findById(tokenPayload.id);
     } catch (e) {
-      console.error(e);
-      throw new ErrorHandler(401, 'Unauthorized');
+      throw new AppError(400, e.message);
     }
   }
 }

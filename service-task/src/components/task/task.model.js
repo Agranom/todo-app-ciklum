@@ -3,14 +3,14 @@ import mongoose from 'mongoose';
 const taskSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'Title is required'],
     trim: true,
-    maxLength: 50,
+    maxlength: [50, 'Title must be less then 50 characters'],
   },
   description: {
     type: String,
     trim: true,
-    maxLength: 255,
+    maxLength: [255, 'Description must be less then 255 characters'],
   },
   status: {
     type: String,
@@ -19,7 +19,7 @@ const taskSchema = new mongoose.Schema({
   },
   createdBy: {
     type: String,
-    required: true,
+    required: [true, 'createdBy field is required'],
   },
 }, { timestamps: true, autoIndex: false });
 

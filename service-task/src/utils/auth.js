@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AppError } from '../components/shared/errors';
 
 const validateToken = async (token) => {
   try {
@@ -11,21 +12,21 @@ const validateToken = async (token) => {
       headers: { Authorization: auth },
     });
   } catch (e) {
-    console.error(e);
-    return e;
+    throw new AppError(401, 'Unauthorized');
   }
 };
 
 export const validateTokenAndGetUser = async (req, res, next) => {
   const { authorization } = req.headers;
+  const unauthorizedError = new AppError(401, 'Unauthorized');
 
   if (!authorization) {
-    return res.status(401).end();
+    return next(unauthorizedError);
   }
   const authHeader = authorization.split(' ');
 
   if (authHeader[0] !== 'Bearer') {
-    return res.status(401).end();
+    return next(unauthorizedError);
   }
 
   if (authHeader[0] === 'Bearer') {
@@ -35,9 +36,9 @@ export const validateTokenAndGetUser = async (req, res, next) => {
       req.user = data;
       return next();
     } catch (e) {
-      return res.status(401).end();
+      return next(unauthorizedError);
     }
   } else {
-    return res.status(401).end();
+    return next(unauthorizedError);
   }
 };

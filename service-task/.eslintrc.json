@@ -15,19 +15,15 @@
   },
   "rules": {
     "semi": "error",
-    "quotes": ["error", "single"],
-    "max-len": ["error", 120],
-    "no-unused-vars": "warn",
-    "import/prefer-default-export": "off",
-    "no-console": [
+    "quotes": [
       "error",
-      {
-        "allow": [
-          "warn",
-          "error",
-          "info"
-        ]
-      }
-    ]
+      "single"
+    ],
+    "max-len": [
+      "error",
+      120
+    ],
+    "no-unused-vars": "warn",
+    "import/prefer-default-export": "off"
   }
 }

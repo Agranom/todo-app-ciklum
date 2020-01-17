@@ -1,3 +1,5 @@
+import { AppError, mongoErrorTypes, ValidationError } from '../shared/errors';
+
 export class TaskService {
   constructor(taskModel) {
     this.taskModel = taskModel;
@@ -12,7 +14,7 @@ export class TaskService {
       }
       return task;
     } catch (e) {
-      throw new Error(e.message);
+      throw new AppError(500, e.message);
     }
   }
 
@@ -22,7 +24,7 @@ export class TaskService {
 
       return tasks.map((task) => task.toObject());
     } catch (e) {
-      throw new Error(e.message);
+      throw new AppError(500, e.message);
     }
   }
 
@@ -32,7 +34,10 @@ export class TaskService {
 
       return newTask.toObject();
     } catch (e) {
-      throw new Error(e.message);
+      if (e.name === mongoErrorTypes.validationError) {
+        throw new ValidationError(e.errors);
+      }
+      throw new AppError(500, e.message);
     }
   }
 
@@ -43,7 +48,10 @@ export class TaskService {
         .lean()
         .exec();
     } catch (e) {
-      throw new Error(e.message);
+      if (e.name === mongoErrorTypes.validationError) {
+        throw new ValidationError(e.errors);
+      }
+      throw new AppError(500, e.message);
     }
   }
 
@@ -54,7 +62,7 @@ export class TaskService {
         .lean()
         .exec();
     } catch (e) {
-      throw new Error(e.message);
+      throw new AppError(500, e.message);
     }
   }
 }

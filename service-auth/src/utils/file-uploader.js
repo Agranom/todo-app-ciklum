@@ -24,21 +24,17 @@ export class FileUploader {
    * @return {Promise<*>}
    */
   uploadImageToAwsBucket(image) {
-    try {
-      const buffer = Buffer.from(image.fileContent.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-      const imageName = `${Date.now()}-${image.fileName}`;
-      const bucketParams = {
-        Bucket: process.env.AWS_ASSETS_BUCKET_NAME,
-        Key: `images/${imageName}`,
-        Body: buffer,
-        ACL: 'public-read',
-        ContentEncoding: 'base64',
-        ContentType: image.fileType,
-      };
+    const buffer = Buffer.from(image.fileContent.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+    const imageName = `${Date.now()}-${image.fileName}`;
+    const bucketParams = {
+      Bucket: process.env.AWS_ASSETS_BUCKET_NAME,
+      Key: `images/${imageName}`,
+      Body: buffer,
+      ACL: 'public-read',
+      ContentEncoding: 'base64',
+      ContentType: image.fileType,
+    };
 
-      return this.awsBucket.upload(bucketParams).promise();
-    } catch (e) {
-      return e;
-    }
+    return this.awsBucket.upload(bucketParams).promise();
   }
 }

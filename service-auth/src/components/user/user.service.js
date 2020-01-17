@@ -1,4 +1,4 @@
-import { ErrorHandler } from '../../utils/error-handler';
+import { AppError } from '../shared/errors';
 
 export class UserService {
   constructor(userModel) {
@@ -9,7 +9,7 @@ export class UserService {
     try {
       return await this.userModel.findById(id);
     } catch (e) {
-      throw new ErrorHandler(401, 'Unauthorized');
+      throw new AppError(401, 'Unauthorized');
     }
   }
 }
